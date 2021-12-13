@@ -1,0 +1,149 @@
+import { useState, useContext, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { SearchContext } from "../SearchContext";
+import styled from "styled-components";
+import { v4 as uuidv4 } from "uuid";
+
+const Songs = () => {
+	const {
+		user,
+		setUser,
+		searchTerm,
+		setSearchTerm,
+		metaCategory,
+		setMetaCategory,
+		song,
+		setSong,
+		artist,
+		setArtist,
+		album,
+		setAlbum,
+		category,
+		setCategory,
+		rawSearchResults,
+		setRawSearchResults,
+	} = useContext(SearchContext);
+
+	const { songId } = useParams();
+	console.log(songId);
+
+	const fetchSong = async () => {
+		await fetch("https://genius.p.rapidapi.com/songs/" + songId, {
+			method: "GET",
+			headers: {
+				"x-rapidapi-host": "genius.p.rapidapi.com",
+				"x-rapidapi-key": "7ad4910444msh707052b566c420fp105e59jsn784037303d1b",
+			},
+		})
+			.then((response) => {
+				return response.json();
+			})
+			.then((data) => {
+				setSong(data.response.song);
+				console.log(data.response.song);
+			})
+			.catch((err) => {
+				console.error(err);
+			});
+	};
+
+	useEffect(() => {
+		fetchSong();
+	}, []);
+
+	if (!song) {
+		return <p>Loading</p>;
+	} else {
+		return (
+			<>
+				<p>Songs</p>
+				<img src={song.song_art_image_thumbnail_url}></img>
+				<h1>{song.title}</h1>
+				<h2>by {song.artist_names}</h2>
+				<p>
+					Album name: {song.album.name}, by {song.album.artist.name}
+				</p>
+				<p>album.cover_art_url:</p>
+				<img src={song.album.cover_art_url}></img>
+				<p>header_image_thumbnail_url:</p>
+				<img src={song.header_image_thumbnail_url}></img>
+				<p>primary_artist.header_image_url:</p>
+				<img src={song.primary_artist.header_image_url}></img>
+
+				{song.featured_artists.map((artist) => {
+					return (
+						<div key={uuidv4}>
+							<p>Featured artist: {artist.name}</p>
+							{/* <img src={artist.header_image_url}></img> */}
+							<img src={artist.image_url}></img>
+						</div>
+					);
+				})}
+				<h4>Personnel:</h4>
+				{song.producer_artists.map((producer) => {
+					return (
+						<div key={uuidv4}>
+							<p>{producer.name}</p>
+							<img src={producer.header_image_url}></img>
+							<img src={producer.image_url}></img>
+							<p>Function: producer</p>
+						</div>
+					);
+				})}
+				{song.custom_performances.map((performance) => {
+					return (
+						<div key={uuidv4}>
+							{performance.artists.map((performer) => {
+								return <p key={uuidv4}>{performer.name}</p>;
+							})}
+							<p>Function: {performance.label}</p>
+						</div>
+					);
+				})}
+				{song.recording_location && (
+					<p>Recording location: {song.recording_location}</p>
+				)}
+				<p>Release date: {song.release_date_for_display}</p>
+				{/* <div>
+					<p>Song art</p>
+					<img src={song.song_art_image_thumbnail_url}></img>
+					<img src={song.song_art_image_url}></img>
+				</div> */}
+				<div>
+					<h4>Song relationships</h4>
+					{song.song_relationships.map((rel) => {
+						return (
+							<div key={uuidv4}>
+								{rel.songs.length > 0 && <h5>{rel.relationship_type}</h5>}
+								{rel.songs.map((song) => {
+									return (
+										<div key={uuidv4}>
+											<p>{song.full_title}</p>
+											<p>{song.api_path}</p>
+										</div>
+									);
+								})}
+							</div>
+						);
+					})}
+				</div>
+				<div>
+					<p>Songwriters</p>
+					<div key={uuidv4}>
+						{song.writer_artists.map((songwriter) => {
+							return (
+								<div key={uuidv4}>
+									<p>{songwriter.name}</p>
+									<img src={songwriter.header_image_url}></img>
+									<img src={songwriter.image_url}></img>
+								</div>
+							);
+						})}
+					</div>
+				</div>
+			</>
+		);
+	}
+};
+
+export default Songs;
