@@ -6,8 +6,6 @@ import { v4 as uuidv4 } from "uuid";
 
 const SearchResults = () => {
 	const {
-		user,
-		setUser,
 		searchTerm,
 		setSearchTerm,
 		metaCategory,
@@ -34,7 +32,7 @@ const SearchResults = () => {
 			method: "GET",
 			headers: {
 				"x-rapidapi-host": "genius.p.rapidapi.com",
-				"x-rapidapi-key": "7ad4910444msh707052b566c420fp105e59jsn784037303d1b",
+				"x-rapidapi-key": process.env.REACT_APP_x_rapidapi_key,
 			},
 		})
 			.then((response) => {
@@ -54,7 +52,6 @@ const SearchResults = () => {
 
 	return (
 		<>
-			<p>SearchResults</p>
 			<ul>
 				{rawSearchResults.map((item, index) => {
 					console.log(item.result.api_path);
@@ -71,6 +68,7 @@ const SearchResults = () => {
 								<IMG src={item.result.header_image_thumbnail_url} />
 								<TitleAndArtist>{item.result.full_title}</TitleAndArtist>
 							</Result>
+							<DIV></DIV>
 						</LI>
 					);
 				})}
@@ -83,24 +81,34 @@ const LI = styled.li`
 	display: flex;
 `;
 const Result = styled.div`
+	align-items: center;
 	width: 100%;
 	display: flex;
 	justify-content: left;
 	border: none;
 	background-color: white;
-	&:hover {
-		background-color: lightgrey;
-	}
+	margin: 6px;
+	text-decoration: none;
 `;
-
+const DIV = styled.div`
+	border: solid 1px darkgrey; // why it's not working?
+`;
 const IMG = styled.img`
 	width: 60px;
 	height: 60px;
 	border-radius: 5px;
+	filter: drop-shadow(0 0 8px #68696e);
 `;
 
 const TitleAndArtist = styled.p`
-	margin: 0 0 0 10px;
+	margin: 0 0 0 18px;
+	filter: drop-shadow(0 0 8px #68696e);
+	text-decoration: none; // ????
+	position: relative;
+
+	&:hover {
+		top: 1px;
+	}
 `;
 
 export default SearchResults;

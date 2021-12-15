@@ -11,15 +11,16 @@ const Profile = () => {
 		return <div>Loading...</div>;
 	}
 
-	return (
-		isAuthenticated && (
-			<NameAndPicDiv>
-				<div>
-					<Name>{user.name}</Name>
-				</div>
-				<ProfilePic src={user.picture} alt={user.name} />
-			</NameAndPicDiv>
-		)
+	return isAuthenticated ? (
+		<NameAndPicDiv>
+			<div>
+				<Name>{user.name}</Name>
+				<LogoutButton />
+			</div>
+			<ProfilePic src={user.picture} alt={user.name} />
+		</NameAndPicDiv>
+	) : (
+		<LoginButton />
 	);
 };
 
@@ -31,6 +32,7 @@ const NameAndPicDiv = styled.div`
 `;
 const ProfilePic = styled.img`
 	border-radius: 50%;
+	border: solid 2px black;
 	height: 45px;
 	width: 45px;
 	margin: 10px;

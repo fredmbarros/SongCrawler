@@ -4,7 +4,7 @@ export const SearchContext = createContext(null);
 export const SearchProvider = ({ children }) => {
 	// setting user as a state variable for now - later localSession/Storage
 	// usar JSON.parse(window.sessionStorage.getItem("loggedUser")) - ver no Facespace - para definir "user"
-	const [user, setUser] = useState(true);
+	const [userId, setUserId] = useState(true);
 
 	// renderOnHome is used in a switch statement to define what is going to be rendered on Home each time
 	const [renderOnHome, setRenderOnHome] = useState("Loading");
@@ -16,6 +16,7 @@ export const SearchProvider = ({ children }) => {
 	const [artist, setArtist] = useState("");
 	const [album, setAlbum] = useState("");
 	const [rawSearchResults, setRawSearchResults] = useState([]);
+	const [isHovering, setIsHovering] = useState(false);
 	// variable to define (and render on the text for searchBox) the selected category
 	const [category, setCategory] = useState("song");
 	let categoryToRender;
@@ -24,32 +25,19 @@ export const SearchProvider = ({ children }) => {
 		setCategory(categ);
 	};
 
-	// let termToFetch = localStorage.getItem("searchTerm");
+	const handleMouseOver = () => {
+		setIsHovering(true);
+	};
 
-	// const searchGenius = async () => {
-	// 	await fetch("https://genius.p.rapidapi.com/search?q=" + termToFetch, {
-	// 		method: "GET",
-	// 		headers: {
-	// 			"x-rapidapi-host": "genius.p.rapidapi.com",
-	// 			"x-rapidapi-key": "7ad4910444msh707052b566c420fp105e59jsn784037303d1b",
-	// 		},
-	// 	})
-	// 		.then((response) => {
-	// 			return response.json();
-	// 		})
-	// 		.then((data) => {
-	// 			setRawSearchResults(data.response.hits);
-	// 		})
-	// 		.catch((err) => {
-	// 			console.error(err);
-	// 		});
-	// };
+	const handleMouseOut = () => {
+		setIsHovering(false);
+	};
 
 	return (
 		<SearchContext.Provider
 			value={{
-				user,
-				setUser,
+				userId,
+				setUserId,
 				renderOnHome,
 				searchTerm,
 				setSearchTerm,
@@ -67,8 +55,10 @@ export const SearchProvider = ({ children }) => {
 				setRawSearchResults,
 				renderCategory,
 				categoryToRender,
-				// termToFetch,
-				// searchGenius,
+				isHovering,
+				setIsHovering,
+				handleMouseOut,
+				handleMouseOver,
 			}}>
 			{children}
 		</SearchContext.Provider>

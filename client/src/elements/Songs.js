@@ -7,8 +7,6 @@ import AddToLists from "./AddToLists";
 
 const Songs = () => {
 	const {
-		user,
-		setUser,
 		searchTerm,
 		setSearchTerm,
 		metaCategory,
@@ -28,13 +26,10 @@ const Songs = () => {
 	} = useContext(SearchContext);
 
 	const { songId } = useParams();
-	console.log(songId);
 	const navigate = useNavigate();
 
-	const missingInfo = (
-		<MissingInfo onClick={() => navigate("/contribute")}>
-			Missing info. Contribute?
-		</MissingInfo>
+	const contribute = (
+		<Contribute onClick={() => navigate("/contribute")}>Contribute?</Contribute>
 	);
 
 	const fetchSong = async () => {
@@ -67,67 +62,86 @@ const Songs = () => {
 	// 	backgroundImage: `url(${song.album.artist.header_image_url})`,
 	// 	filter: "contrast(70%) brightness(40%) blur(50%)",
 	// };
-
+	console.log(song);
 	if (!song) {
 		return <p>Loading</p>;
 	} else {
 		return (
-			<>
-				<p>Songs</p>
+			<Wrapper>
 				<Head>
 					<NameAndPicDiv>
 						<Thumbnail src={song.song_art_image_thumbnail_url}></Thumbnail>
-						<div>
+						<MainInfoHead>
 							<h1>{song.title}</h1>
 							<h2>by {song.artist_names}</h2>
 							<p>Primary artist: {song.primary_artist.name}</p>
-							<AddToLists />
-						</div>
+							<AddToLists
+								songId={songId}
+								songTitle={song.title}
+								artist={song.artist_names}
+							/>
+						</MainInfoHead>
 						<AlbumInfo>
-							<AlbumThumbnail src={song.album.cover_art_url}></AlbumThumbnail>
-							<p>
-								Album: {song.album.name}, by {song.album.artist.name}
-							</p>
+							<p>Album:</p>
+							{song.album ? (
+								<>
+									<AlbumThumbnail
+										src={
+											song.album.cover_art_url ? (
+												song.album.cover_art_url
+											) : (
+												<p>Cover not available</p>
+											)
+										}></AlbumThumbnail>
+									<p>{song.album.name}</p>
+									<p>by {song.album.artist.name}</p>
+								</>
+							) : (
+								<p>Missing info. {contribute}</p>
+							)}
 						</AlbumInfo>
 					</NameAndPicDiv>
 				</Head>
+				<BodyWrapper>
+					<div>
+						<h4>Songwriter(s): </h4>
+						<div key={uuidv4()}>
+							{song.writer_artists.map((songwriter) => {
+								return (
+									<div key={uuidv4()}>
+										<p>{songwriter.name}</p>
+									</div>
+								);
+							})}
+						</div>
+					</div>
 
-				<div>
-					<h4>Songwriter(s): </h4>
-					<div key={uuidv4()}>
-						{song.writer_artists.map((songwriter) => {
+					{song.featured_artists.length > 0 &&
+						song.featured_artists.map((artist) => {
 							return (
-								<div key={uuidv4()}>
-									<p>{songwriter.name}</p>
-								</div>
+								<Featured key={uuidv4()}>
+									<h4>Featured:</h4>
+									<p>{artist.name}</p>
+									<ThumbnailSmall src={artist.image_url}></ThumbnailSmall>
+								</Featured>
 							);
 						})}
-					</div>
-				</div>
 
-				{song.featured_artists.length > 0 &&
-					song.featured_artists.map((artist) => {
-						return (
-							<div key={uuidv4()}>
-								<h4>Featured artist: {artist.name}</h4>
-								<ThumbnailSmall src={artist.image_url}></ThumbnailSmall>
-							</div>
-						);
-					})}
-
-				<h4>Personnel:</h4>
-				{song.producer_artists.length > 0
-					? song.producer_artists.map((producer) => {
+					<h4>Personnel:</h4>
+					{song.producer_artists.length > 0 ? (
+						song.producer_artists.map((producer) => {
 							return (
 								<div key={uuidv4()}>
 									<p>Producer: {producer.name}</p>
 								</div>
 							);
-					  })
-					: missingInfo}
+						})
+					) : (
+						<p>Missing info. {contribute}</p>
+					)}
 
-				{song.custom_performances.length > 0
-					? song.custom_performances.map((performance) => {
+					{song.custom_performances.length > 0 ? (
+						song.custom_performances.map((performance) => {
 							return (
 								<div key={uuidv4()}>
 									{performance.artists.map((performer) => {
@@ -139,66 +153,99 @@ const Songs = () => {
 									})}
 								</div>
 							);
-					  })
-					: missingInfo}
+						})
+					) : (
+						<p>Missing info. {contribute}</p>
+					)}
 
-				<h4>Recording location:</h4>
-				{song.recording_location ? (
-					<p>{song.recording_location}</p>
-				) : (
-					missingInfo
-				)}
+					<h4>Recording location:</h4>
+					{song.recording_location ? (
+						<p>{song.recording_location}</p>
+					) : (
+						<p>Missing info. {contribute}</p>
+					)}
 
-				<h4>Release date: </h4>
-				<p>{song.release_date_for_display}</p>
-				<div>
-					<h4>Song relationships</h4>
-					{song.song_relationships.map((rel) => {
-						return (
-							<div key={uuidv4()}>
-								{rel.songs.length > 0 && <h4>{rel.relationship_type}</h4>}
-								{rel.songs.map((song) => {
-									return (
-										<Result as={Link} to={song.api_path} key={uuidv4()}>
-											<p>{song.full_title}</p>
-										</Result>
-									);
-								})}
-							</div>
-						);
-					})}
-				</div>
-			</>
+					<h4>Release date: </h4>
+					{song.release_date_for_display ? (
+						<p>{song.release_date_for_display}</p>
+					) : (
+						<p>Missing info. {contribute}</p>
+					)}
+					<div>
+						<h4>Song relationships</h4>
+						{song.song_relationships.length > 0 ? (
+							song.song_relationships.map((rel) => {
+								return (
+									<div key={uuidv4()}>
+										{rel.songs.length > 0 && <h4>{rel.relationship_type}</h4>}
+										{rel.songs.map((song) => {
+											return (
+												<Result as={Link} to={song.api_path} key={uuidv4()}>
+													<p>{song.full_title}</p>
+												</Result>
+											);
+										})}
+									</div>
+								);
+							})
+						) : (
+							<p>Missing info. {contribute}</p>
+						)}
+					</div>
+				</BodyWrapper>
+			</Wrapper>
 		);
 	}
 };
 
+const Wrapper = styled.div`
+	background-color: #68696e;
+	color: white;
+	filter: drop-shadow(0 0 8px #1f2124);
+`;
+const BodyWrapper = styled.div`
+	margin: 0 20px;
+	filter: drop-shadow(0 0 8px #1f2124);
+`;
 const Head = styled.div`
 	background-color: lightgrey;
 	display: flex;
+`;
+const MainInfoHead = styled.div`
+	margin: 20px 56px;
+	color: black;
+	filter: drop-shadow(0 0 8px #68696e);
 `;
 const NameAndPicDiv = styled.div`
 	display: flex;
 	flex-direction: row;
 `;
 const Thumbnail = styled.img`
-	border: solid white 1px;
-	box-shadow: lightgrey 0 2px 10px;
+	filter: drop-shadow(0 0 8px #1f2124);
+	margin: 10px;
+	width: 360px;
+	height: 360px;
 `;
 const AlbumThumbnail = styled.img`
 	height: 140px;
 	width: auto;
+	filter: drop-shadow(0 0 6px #1f2124);
 `;
 const AlbumInfo = styled.div`
 	width: 160px;
 	padding: 20px;
 	margin: 20px;
+	color: black;
+`;
+const Featured = styled.div`
+	display: flex;
+	align-items: baseline;
 `;
 const ThumbnailSmall = styled.img`
 	height: 50px;
 	width: auto;
 `;
-const MissingInfo = styled.p`
+const Contribute = styled.p`
 	color: blue;
 	cursor: pointer;
 `;

@@ -11,14 +11,25 @@ const Searchbox = () => {
 		setCategory,
 		setRawSearchResults,
 		rawSearchResults,
+		isHovering,
+		setIsHovering,
+		handleMouseOut,
+		handleMouseOver,
 	} = useContext(SearchContext);
 
 	let navigate = useNavigate();
 
 	const handleSubmit = (ev) => {
-		localStorage.setItem("searchTerm", searchTerm);
-		navigate("./results");
+		// the idea here is to avoid an empty search, but it's not working properly
+		if (!searchTerm) {
+			console.log(searchTerm);
+			void 0;
+		} else {
+			localStorage.setItem("searchTerm", searchTerm);
+			navigate("./results");
+		}
 	};
+
 	return (
 		<Form onSubmit={handleSubmit}>
 			<BoxAndButton>
@@ -28,51 +39,45 @@ const Searchbox = () => {
 					id="search"
 					name="search"
 					value={searchTerm}
-					placeholder="on hover explain search"
+					placeholder="Search for songs"
 					onChange={(ev) => setSearchTerm(ev.target.value)}
 				/>
 				<SubmitBtn type="submit" name="SubmitBtn" value="Go" />
 			</BoxAndButton>
-			{/* <div onChange={(ev) => setCategory(ev.target.value)}>
-				<Radio
-					type="radio"
-					id="song"
-					name="category"
-					value="song"
-					defaultChecked
-				/>
-				<Label for="song">Song</Label>
-				<Radio type="radio" id="artist" name="category" value="artist" />
-				<Label for="artist">Artist</Label>
-				<Radio type="radio" id="Album" name="category" value="album" />
-				<Label for="Album">Album</Label>
-			</div> */}
 		</Form>
 	);
 };
 
 const Form = styled.form`
-	margin: 20px;
-	border: solid blue 2px;
+	margin: 4px #1f2124;
+	background-color: #1f2124;
 `;
 const BoxAndButton = styled.div`
 	width: 280px;
+	display: flex;
+	align-items: center;
 `;
 const InputBox = styled.input`
 	padding: 5px;
+	margin: 4px 4px 4px 7px;
 	border: solid black 2px;
 	border-radius: 5px;
-	width: 168px;
+	width: 226px;
 `;
 const SubmitBtn = styled.input`
-	margin: 0 4px 0 6px;
-	height: 32px;
+	margin: 0 4px 0 4px;
+	height: 33px;
 	width: 33px;
 	border-radius: 50px;
-`;
-const Radio = styled.input``;
-const Label = styled.label`
-	font-size: 14px;
-`;
+	position: relative;
 
+	&:hover {
+		cursor: pointer;
+	}
+	&:active {
+		filter: drop-shadow(0 0 -6px #1f2124);
+		height: 31px;
+		width: 31px;
+	}
+`;
 export default Searchbox;

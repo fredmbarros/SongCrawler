@@ -1,32 +1,48 @@
-const path = require("path");
+"use strict";
+
+// import the needed node_modules.
 const express = require("express");
-const bodyParser = require("body-parser");
 const morgan = require("morgan");
-const PORT = 8000;
-const app = express();
+
+// import modules
 const {
-    getFlights,
-    getFlight,
-    getReservations,
-    addReservations,
-    getSingleReservation,
-    deleteReservation,
-    updateReservation,
-  } = require("./handlers");
+	getUser,
+	getSong,
+  getNote,
+	addUser,
+	addSong,
+  addNote,
+  updateUser,
+	updateSong,
+  deleteUser,
+  deleteSong,
+  updateNote
+} = require("./handlers");
 
-app
-  .use(express.json())
-  .use(morgan("tiny"))
-  .use(bodyParser.json())
-//   .use(express.static("public"))
-//   .use(express.urlencoded({ extended: false }))
-//   .use("/", express.static(__dirname + "/"))
+const PORT = process.env.PORT || 8000;
 
-  // handle 404s
-  .use((req, res) => res.status(404).type("txt").send("🤷‍♂️"))
-  .listen(PORT, () => console.log(`Listening on port ${PORT}`))
+express()
+	.use(morgan("tiny"))
+	.use(express.json())
+	.use(express.static("public"))
 
-.get("/", (req, res) => {
-    res.status(200).json({status: "200", message: "home"})
-})
+	// endpoints
+	.get("/users/:userId", getUser)
+	.get("/songs/:songId", getSong)
+  .get("/notes/:noteId", getNote)
+	.post("/users", addUser)
+	.post("/songs", addSong)
+  .post("/notes", addNote)
+	.put("/users/:userId", updateUser)
+	.put("/songs/:songId", updateSong)
+  .put("/notes/:noteId", updateNote)
+	.delete("/songs/:songId", deleteSong)
+  .delete("/users/:userId", deleteUser)
+	.get("*", (req, res) => {
+		res.status(404).json({
+			status: 404,
+			message: "Error",
+		});
+	})
 
+	.listen(8000, () => console.log(`Listening on port 8000`));

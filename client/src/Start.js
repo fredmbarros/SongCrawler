@@ -8,13 +8,13 @@ import Searchbox from "./Searchbox";
 const Start = () => {
 	const { category, user } = useContext(SearchContext);
 
-	let navigate = useNavigate();
+	// let navigate = useNavigate();
 
-	useEffect(() => {
-		if (user) {
-			navigate("/");
-		}
-	}, []);
+	// useEffect(() => {
+	// 	if (user) {
+	// 		navigate("/");
+	// 	}
+	// }, []);
 
 	// randomly choose text to accompany the searchBox in Start
 	const [greeting, setGreeting] = useState();

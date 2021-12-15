@@ -1,10 +1,12 @@
 import { useContext, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 import styled from "styled-components";
 import Header from "./Header";
 import Home from "./Home";
 import SearchResults from "./SearchResults";
-import SecondHeader from "./SecondHeader";
+import Searchbox from "./Searchbox";
+import Sidebar from "./Sidebar";
 import { SearchContext } from "./SearchContext";
 import Start from "./Start";
 
@@ -21,8 +23,8 @@ import Songs from "./categories/Songs";
 import Contribute from "./Contribute";
 
 const App = () => {
-	const { user, setUser, renderOnHome, rawSearchResults } =
-		useContext(SearchContext);
+	const { renderOnHome, rawSearchResults } = useContext(SearchContext);
+	const { user, isAuthenticated, isLoading } = useAuth0();
 
 	return (
 		<>
@@ -30,7 +32,10 @@ const App = () => {
 			<Router>
 				<Header />
 				<Wrapper>
-					{user && <SecondHeader />}
+					<SecondHeader>
+						<Sidebar />
+						<Searchbox />
+					</SecondHeader>
 					<Routes>
 						<Route exact path="/" element={<Home />} />
 						<Route exact path="/start" element={<Start />} />
@@ -53,5 +58,8 @@ const GlobalStyles = styled.div`
 `;
 const Wrapper = styled.div`
 	/* display: flex; */
+`;
+const SecondHeader = styled.div`
+	display: flex;
 `;
 export default App;

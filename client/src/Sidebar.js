@@ -66,11 +66,11 @@ const Sidebar = () => {
 const Bar = styled.div`
 	display: flex;
 	flex-direction: row;
-	background-color: white;
-	padding: 10px 10px 0 10px;
+	background-color: #1f2124;
+	padding: 0px 10px 0 10px;
 	/* width: 227px; */
 	width: 100%;
-	border: solid red 2px;
+	border: solid #1f2124 2px;
 `;
 const P = styled.p`
 	margin: 4px 0;
@@ -78,13 +78,15 @@ const P = styled.p`
 const SidebarElem = styled.button`
 	text-align: left;
 	border: none;
-	border-bottom: solid black 1px;
-	background-color: white;
-	padding: 12px 0 4px 0;
-	margin: 0 10px 0 0;
+	color: white;
+	background-color: #1f2124;
+	margin: 0 20px;
+	cursor: pointer;
+	position: relative;
 
 	&:hover {
-		text-shadow: 0 1px grey;
+		/* filter: drop-shadow(0 0 6px #68696e); */
+		bottom: 1px;
 	}
 `;
 export default Sidebar;
