@@ -88,21 +88,22 @@ const Result = styled.div`
 	border: none;
 	background-color: white;
 	margin: 6px;
-	text-decoration: none;
+	padding: 0 0 4px 0;
+	border-bottom: solid 1px darkgrey;
+	margin-right: 40px;
+	text-decoration: none; // ????
 `;
-const DIV = styled.div`
-	border: solid 1px darkgrey; // why it's not working?
-`;
+const DIV = styled.div``;
 const IMG = styled.img`
 	width: 60px;
 	height: 60px;
 	border-radius: 5px;
-	filter: drop-shadow(0 0 8px #68696e);
+	filter: drop-shadow(0 0 4px #bababa);
 `;
 
 const TitleAndArtist = styled.p`
 	margin: 0 0 0 18px;
-	filter: drop-shadow(0 0 8px #68696e);
+	filter: drop-shadow(0 0 16px #bababa);
 	text-decoration: none; // ????
 	position: relative;
 
