@@ -1,16 +1,48 @@
-const path = require("path");
+"use strict";
+
+// import the needed node_modules.
 const express = require("express");
+const morgan = require("morgan");
 
-const PORT = 8000;
+// import modules
+const {
+	getUser,
+	getSong,
+	getNote,
+	addUser,
+	addSong,
+	addNote,
+	updateUser,
+	updateSong,
+	deleteUser,
+	deleteSong,
+	updateNote,
+} = require("./handlers");
 
-var app = express();
+const PORT = process.env.PORT || 8000;
 
-app.use(express.json())
+express()
+	.use(morgan("tiny"))
+	.use(express.json())
+	.use(express.static("public"))
 
-.get("/", (req, res) => {
-    res.status(200).json({status: "200", message: "home"})
-})
+	// endpoints
+	.get("/users/:userId", getUser)
+	.get("/users/songs/", getSong)
+	.get("/notes/:noteId", getNote)
+	.post("/users/", addUser)
+	.post("/users/songs", addSong)
+	.post("/notes", addNote)
+	.put("/users/:userId", updateUser)
+	.put("/songs/:songId", updateSong)
+	.put("/notes/:noteId", updateNote)
+	.delete("/users/songs/", deleteSong)
+	.delete("/users/:userId", deleteUser)
+	.get("*", (req, res) => {
+		res.status(404).json({
+			status: 404,
+			message: "Error",
+		});
+	})
 
-const server = app.listen(PORT, function () {
-	console.info("🌍 Listening on port " + PORT);
-});
+	.listen(8000, () => console.log(`Listening on port 8000`));
