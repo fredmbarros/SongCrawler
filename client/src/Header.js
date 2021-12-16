@@ -26,8 +26,11 @@ const SongCrawlerAndUser = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	margin-bottom: 10px;
-	filter: drop-shadow(0 0 16px #bababa);
+	padding-bottom: 4px;
+	border-bottom: solid 4px #960000;
+	background-color: white;
+	color: black;
+	/* filter: drop-shadow(0 0 16px #bababa); */
 `;
 const SongCrawler = styled.div`
 	display: flex;

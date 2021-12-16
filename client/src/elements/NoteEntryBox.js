@@ -1,11 +1,12 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-const NotesBox = ({ setShowNotesBox }) => {
+const NoteEntryBox = ({ setShowNoteEntryBox }) => {
 	const [noteText, setNoteText] = useState("");
 	const handleSubmit = () => {
+		if (noteText)
 		console.log(noteText);
-		setShowNotesBox(false);
+		setShowNoteEntryBox(false);
 	};
 
 	return (
@@ -27,7 +28,7 @@ const NotesBox = ({ setShowNotesBox }) => {
 					type="button"
 					name="CancelSaveNotes"
 					value="Cancel"
-					onClick={() => setShowNotesBox(false)}>
+					onClick={() => setShowNoteEntryBox(false)}>
 					Cancel
 				</Button>
 			</BtnDiv>
@@ -41,6 +42,7 @@ const Wrapper = styled.div`
 	flex-direction: column;
 	justify-content: flex-end;
 	filter: drop-shadow(0 0 8px #68696e);
+	z-index: 100;
 `;
 const TextEntryBox = styled.textarea`
 	position: relative;
@@ -64,8 +66,12 @@ const Button = styled.button`
 	color: black;
 	border: solid 1px grey;
 	background-color: white;
+	position: relative;
 	&:hover {
-		bottom: 2px;
+		bottom: 1px;
+	}
+	&:active {
+		bottom: -1px;
 	}
 `;
-export default NotesBox;
+export default NoteEntryBox;

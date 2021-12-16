@@ -8,15 +8,15 @@ const morgan = require("morgan");
 const {
 	getUser,
 	getSong,
-  getNote,
+	getNote,
 	addUser,
 	addSong,
-  addNote,
-  updateUser,
+	addNote,
+	updateUser,
 	updateSong,
-  deleteUser,
-  deleteSong,
-  updateNote
+	deleteUser,
+	deleteSong,
+	updateNote,
 } = require("./handlers");
 
 const PORT = process.env.PORT || 8000;
@@ -28,16 +28,16 @@ express()
 
 	// endpoints
 	.get("/users/:userId", getUser)
-	.get("/songs/:songId", getSong)
-  .get("/notes/:noteId", getNote)
-	.post("/users", addUser)
-	.post("/songs", addSong)
-  .post("/notes", addNote)
+	.get("/users/songs/", getSong)
+	.get("/notes/:noteId", getNote)
+	.post("/users/", addUser)
+	.post("/users/songs", addSong)
+	.post("/notes", addNote)
 	.put("/users/:userId", updateUser)
 	.put("/songs/:songId", updateSong)
-  .put("/notes/:noteId", updateNote)
-	.delete("/songs/:songId", deleteSong)
-  .delete("/users/:userId", deleteUser)
+	.put("/notes/:noteId", updateNote)
+	.delete("/users/songs/", deleteSong)
+	.delete("/users/:userId", deleteUser)
 	.get("*", (req, res) => {
 		res.status(404).json({
 			status: 404,

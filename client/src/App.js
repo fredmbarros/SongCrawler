@@ -19,7 +19,7 @@ import Albums from "./categories/Albums";
 import Artists from "./categories/Artists";
 import Lists from "./categories/Lists";
 import Notes from "./categories/Notes";
-import Songs from "./categories/Songs";
+import Songs from "./categories/SavedSongs";
 import Contribute from "./Contribute";
 
 const App = () => {
@@ -44,7 +44,7 @@ const App = () => {
 						<Route path="/lists" element={<Lists />} />
 						<Route path="/notes" element={<Notes />} />
 						<Route path="/songs/:songId" element={<Song />} />
-						<Route path="/saved-songs" element={<Songs />} />
+						<Route path="/songs" element={<Songs />} />
 						<Route path="/contribute" element={<Contribute />} />
 					</Routes>
 				</Wrapper>

@@ -14,7 +14,6 @@ ReactDOM.render(
 		<SearchProvider>
 			<App />
 		</SearchProvider>
-		,
 	</Auth0Provider>,
 	document.getElementById("root")
 );

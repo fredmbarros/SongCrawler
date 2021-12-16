@@ -28,9 +28,7 @@ const Sidebar = () => {
 		<Bar>
 			<SidebarElem
 				onClick={() => {
-					setCategory("song");
-					setSong("");
-					navigate("/song");
+					navigate("/saved-songs");
 				}}>
 				Saved songs
 			</SidebarElem>
@@ -83,6 +81,7 @@ const SidebarElem = styled.button`
 	margin: 0 20px;
 	cursor: pointer;
 	position: relative;
+	z-index: 0  ;
 
 	&:hover {
 		/* filter: drop-shadow(0 0 6px #68696e); */

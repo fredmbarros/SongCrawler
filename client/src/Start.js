@@ -42,6 +42,7 @@ const Start = () => {
 		<Wrapper>
 			<SearchElement>
 				<Form>
+					<HackDiv></HackDiv>
 					<p>{greeting}</p>
 					<Searchbox />
 				</Form>
@@ -56,6 +57,13 @@ const SearchElement = styled.div`
 	height: 100vh;
 	background-color: lightblue;
 	/* background-image: url("./assets/fender-tweed.jpg"); */
+`;
+const HackDiv = styled.div`
+	position: relative;
+	z-index: 100;
+	height: 40px;
+	width: 160px;
+	background-color: blue;
 `;
 
 const Form = styled.div`

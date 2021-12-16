@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import styled from "styled-components";
 import LoginButton from "./LoginButton";
@@ -7,23 +7,46 @@ import LogoutButton from "./LogoutButton";
 const Profile = () => {
 	const { user, isAuthenticated, isLoading } = useAuth0();
 
-	if (isLoading) {
-		return <div>Loading...</div>;
-	}
+	useEffect(() => {
+		if (user) {
+			fetch("/users", {
+				method: "POST",
+				headers: { 'Accept': "application/json",
+						   'Content-Type': "application/json" },
+				body: JSON.stringify({ email: user.email }),
+			})
+		}
+	}, [user]);
 
-	return isAuthenticated ? (
-		<NameAndPicDiv>
-			<div>
-				<Name>{user.name}</Name>
-				<LogoutButton />
-			</div>
-			<ProfilePic src={user.picture} alt={user.name} />
-		</NameAndPicDiv>
-	) : (
-		<LoginButton />
-	);
+	if (!user) {
+		if (isLoading) {
+			return <div>Loading...</div>;
+		}
+		return (
+			<>
+				<LoginButton />
+			</>
+		);
+	} else {
+		if (isLoading) {
+			return <div>Loading...</div>;
+		}
+
+		return (
+			<Wrapper>
+				<NameAndPicDiv>
+					<div>
+						<Name>{user.name}</Name>
+						<LogoutButton />
+					</div>
+					<ProfilePic src={user.picture} alt={user.name} />
+				</NameAndPicDiv>
+			</Wrapper>
+		);
+	}
 };
 
+const Wrapper = styled.div``;
 const NameAndPicDiv = styled.div`
 	display: flex;
 	flex-direction: row;

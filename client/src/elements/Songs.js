@@ -1,5 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 import { SearchContext } from "../SearchContext";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
@@ -24,16 +25,17 @@ const Songs = () => {
 		searchGenius,
 		termToFetch,
 	} = useContext(SearchContext);
-
+	const { user, isAuthenticated, isLoading } = useAuth0();
+	const userId = user?.email;
 	const { songId } = useParams();
 	const navigate = useNavigate();
+	const [songInUser, setSongInUser] = useState(false);
 
 	const contribute = (
 		<Contribute onClick={() => navigate("/contribute")}>Contribute?</Contribute>
 	);
 
 	const fetchSong = async () => {
-		console.log(process.env.REACT_APP_x_rapidapi_key);
 		await fetch("https://genius.p.rapidapi.com/songs/" + songId, {
 			method: "GET",
 			headers: {
@@ -50,6 +52,18 @@ const Songs = () => {
 			})
 			.catch((err) => {
 				console.error(err);
+			});
+		// fetching user information to get the list of songs they've saved
+		fetch(`/users/${userId}`)
+			.then((res) => res.json())
+			.then((data) => {
+				if (
+					data.user?.songs.find((song) => {
+						return song === songId;
+					})
+				) {
+					setSongInUser(true);
+				}
 			});
 	};
 
@@ -79,6 +93,8 @@ const Songs = () => {
 								songId={songId}
 								songTitle={song.title}
 								artist={song.artist_names}
+								songInUser={songInUser}
+								setSongInUser={setSongInUser}
 							/>
 						</MainInfoHead>
 						<AlbumInfo>
@@ -201,20 +217,21 @@ const Songs = () => {
 const Wrapper = styled.div`
 	background-color: #68696e;
 	color: white;
-	filter: drop-shadow(0 0 8px #1f2124);
+	border: solid 2px #363636;
 `;
 const BodyWrapper = styled.div`
 	margin: 0 20px;
-	filter: drop-shadow(0 0 8px #1f2124);
+	max-height: 600px;
+	overflow: auto;
 `;
 const Head = styled.div`
 	background-color: lightgrey;
 	display: flex;
+	border-bottom: solid 2px #363636;
 `;
 const MainInfoHead = styled.div`
 	margin: 20px 56px;
 	color: black;
-	filter: drop-shadow(0 0 8px #68696e);
 `;
 const NameAndPicDiv = styled.div`
 	display: flex;
@@ -254,9 +271,10 @@ const Result = styled.div`
 	display: flex;
 	justify-content: left;
 	border: none;
-	background-color: white;
+	background-color: #68696e;
+	position: relative;
 	&:hover {
-		background-color: lightgrey;
+		bottom: 1px;
 	}
 `;
 export default Songs;

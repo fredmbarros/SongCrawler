@@ -108,7 +108,7 @@ const TitleAndArtist = styled.p`
 	position: relative;
 
 	&:hover {
-		top: 1px;
+		bottom: 1px;
 	}
 `;
 

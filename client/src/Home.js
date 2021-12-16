@@ -70,8 +70,7 @@ const Home = () => {
 	);
 };
 
-const Wrapper = styled.div`
-`;
+const Wrapper = styled.div``;
 const SearchElement = styled.div`
 	width: 100vw;
 	height: 100vh;
