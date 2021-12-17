@@ -7,11 +7,12 @@ import Searchbox from "./Searchbox";
 import Sidebar from "./Sidebar";
 
 const SecondHeader = () => {
+	const { hideSearchBox } = useContext(SearchContext);
 	return (
 		<>
 			<Head>
 				<Sidebar />
-				<Searchbox />
+				{hideSearchBox && <Searchbox />}
 			</Head>
 		</>
 	);

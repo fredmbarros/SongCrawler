@@ -32,14 +32,6 @@ const Sidebar = () => {
 				}}>
 				Saved songs
 			</SidebarElem>
-			{/* <SidebarElem
-				onClick={() => {
-					setCategory("list");
-					setAlbum("");
-					navigate("/lists");
-				}}>
-				Lists
-			</SidebarElem> */}
 			<SidebarElem
 				onClick={() => {
 					setCategory("artist");

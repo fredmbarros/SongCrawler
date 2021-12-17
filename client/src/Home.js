@@ -24,17 +24,16 @@ const Home = () => {
 		setAlbum,
 		category,
 		setCategory,
+		hideSearchBox,
+		setHideSearchBox,
 	} = useContext(SearchContext);
 	const { user, isAuthenticated, isLoading } = useAuth0();
-
-	// primeiro procurar no meu BE, se não tiver a info lá, buscar no Genius...
-	// ...na verdade, cada busca tem que ser feita nos dois, porque pode ter coisa nova no Genius
-	let navigate = useNavigate();
 
 	// checking if there's been a previous session saved in localStorage. If there is, render it in Songs like a regular search, else go to Start. Not working: dosen't navigate, considers checkPrevSession always true, if I insert getItem straight into the if cond I get a loop in re-renders
 
 	// loading state
 	const [status, setStatus] = useState(null);
+	setHideSearchBox(true);
 
 	// randomly choose text to accompany the searchBox in Start
 	const [greeting, setGreeting] = useState();

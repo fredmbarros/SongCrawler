@@ -1,5 +1,9 @@
 import { useContext, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+	BrowserRouter as Router,
+	Routes,
+	Route,
+} from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import styled from "styled-components";
 import Header from "./Header";
@@ -37,8 +41,8 @@ const App = () => {
 						<Searchbox />
 					</SecondHeader>
 					<Routes>
-						<Route exact path="/" element={<Home />} />
-						<Route exact path="/start" element={<Start />} />
+						<Route exact path="/home" element={<Home />} />
+						<Route exact path="/" element={<Start />} />
 						<Route path="/results" element={<SearchResults />} />
 						<Route path="/list" element={<List />} />
 						<Route path="/lists" element={<Lists />} />

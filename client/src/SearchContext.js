@@ -20,6 +20,7 @@ export const SearchProvider = ({ children }) => {
 	// variable to define (and render on the text for searchBox) the selected category
 	const [category, setCategory] = useState("song");
 	let categoryToRender;
+	const [hideSearchBox, setHideSearchBox] = useState(false);
 
 	const renderCategory = (categ) => {
 		setCategory(categ);
@@ -59,6 +60,8 @@ export const SearchProvider = ({ children }) => {
 				setIsHovering,
 				handleMouseOut,
 				handleMouseOver,
+				hideSearchBox,
+				setHideSearchBox,
 			}}>
 			{children}
 		</SearchContext.Provider>
