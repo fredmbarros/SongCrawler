@@ -11,10 +11,12 @@ const Profile = () => {
 		if (user) {
 			fetch("/users", {
 				method: "POST",
-				headers: { 'Accept': "application/json",
-						   'Content-Type': "application/json" },
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/json",
+				},
 				body: JSON.stringify({ email: user.email }),
-			})
+			});
 		}
 	}, [user]);
 
@@ -46,7 +48,10 @@ const Profile = () => {
 	}
 };
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+	border-bottom: solid 4px #960000;
+	width: 100%;
+`;
 const NameAndPicDiv = styled.div`
 	display: flex;
 	flex-direction: row;

@@ -1,9 +1,5 @@
 import { useContext, useEffect } from "react";
-import {
-	BrowserRouter as Router,
-	Routes,
-	Route,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import styled from "styled-components";
 import Header from "./Header";
@@ -65,5 +61,8 @@ const Wrapper = styled.div`
 `;
 const SecondHeader = styled.div`
 	display: flex;
+	box-shadow: 0 2px 12px 1px #3e4042;
+	position: relative;
+	z-index: 2;
 `;
 export default App;

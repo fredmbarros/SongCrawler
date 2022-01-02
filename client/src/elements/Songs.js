@@ -32,7 +32,9 @@ const Songs = () => {
 	const [songInUser, setSongInUser] = useState(false);
 
 	const contribute = (
-		<Contribute onClick={() => navigate("/contribute")}>Contribute?</Contribute>
+		<Contribute onClick={() => navigate("/contribute")}>
+			- contribute?
+		</Contribute>
 	);
 
 	const fetchSong = async () => {
@@ -87,7 +89,7 @@ const Songs = () => {
 						<Thumbnail src={song.song_art_image_thumbnail_url}></Thumbnail>
 						<MainInfoHead>
 							<h1>{song.title}</h1>
-							<h2>by {song.artist_names}</h2>
+							<H2>by {song.artist_names}</H2>
 							<p>Primary artist: {song.primary_artist.name}</p>
 							<AddToLists
 								songId={songId}
@@ -113,26 +115,29 @@ const Songs = () => {
 									<p>by {song.album.artist.name}</p>
 								</>
 							) : (
-								<p>Missing info. {contribute}</p>
+								<span>Missing info {contribute}</span>
 							)}
 						</AlbumInfo>
 					</NameAndPicDiv>
 				</Head>
-				<BodyWrapper>
-					<div>
-						<h4>Songwriter(s): </h4>
-						<div key={uuidv4()}>
-							{song.writer_artists.map((songwriter) => {
-								return (
-									<div key={uuidv4()}>
-										<p>{songwriter.name}</p>
-									</div>
-								);
-							})}
-						</div>
-					</div>
 
-					{song.featured_artists.length > 0 &&
+				<Body>
+					<InfoWrapper>
+						<h2>Song info</h2>
+						<div>
+							<h4>Songwriter(s): </h4>
+							<div key={uuidv4()}>
+								{song.writer_artists.map((songwriter) => {
+									return (
+										<div key={uuidv4()}>
+											<p>{songwriter.name}</p>
+										</div>
+									);
+								})}
+							</div>
+						</div>
+
+						{/* {song.featured_artists.length > 0 &&
 						song.featured_artists.map((artist) => {
 							return (
 								<Featured key={uuidv4()}>
@@ -141,74 +146,96 @@ const Songs = () => {
 									<ThumbnailSmall src={artist.image_url}></ThumbnailSmall>
 								</Featured>
 							);
-						})}
+						})} */}
 
-					<h4>Personnel:</h4>
-					{song.producer_artists.length > 0 ? (
-						song.producer_artists.map((producer) => {
-							return (
-								<div key={uuidv4()}>
-									<p>Producer: {producer.name}</p>
-								</div>
-							);
-						})
-					) : (
-						<p>Missing info. {contribute}</p>
-					)}
-
-					{song.custom_performances.length > 0 ? (
-						song.custom_performances.map((performance) => {
-							return (
-								<div key={uuidv4()}>
-									{performance.artists.map((performer) => {
-										return (
-											<p key={uuidv4()}>
-												{performance.label}: {performer.name}
-											</p>
-										);
-									})}
-								</div>
-							);
-						})
-					) : (
-						<p>Missing info. {contribute}</p>
-					)}
-
-					<h4>Recording location:</h4>
-					{song.recording_location ? (
-						<p>{song.recording_location}</p>
-					) : (
-						<p>Missing info. {contribute}</p>
-					)}
-
-					<h4>Release date: </h4>
-					{song.release_date_for_display ? (
-						<p>{song.release_date_for_display}</p>
-					) : (
-						<p>Missing info. {contribute}</p>
-					)}
-					<div>
-						<h4>Song relationships</h4>
-						{song.song_relationships.length > 0 ? (
-							song.song_relationships.map((rel) => {
+						<h4>Personnel:</h4>
+						{song.producer_artists.length > 0 ? (
+							song.producer_artists.map((producer) => {
 								return (
 									<div key={uuidv4()}>
-										{rel.songs.length > 0 && <h4>{rel.relationship_type}</h4>}
-										{rel.songs.map((song) => {
+										<p>Producer: {producer.name}</p>
+									</div>
+								);
+							})
+						) : (
+							<span>Missing info {contribute}</span>
+						)}
+						{song.custom_performances.length > 0 ? (
+							song.custom_performances.map((performance) => {
+								return (
+									<div key={uuidv4()}>
+										{performance.artists.map((performer) => {
 											return (
-												<Result as={Link} to={song.api_path} key={uuidv4()}>
-													<p>{song.full_title}</p>
-												</Result>
+												<p key={uuidv4()}>
+													{performance.label + ": " + performer.name}
+												</p>
 											);
 										})}
 									</div>
 								);
 							})
 						) : (
-							<p>Missing info. {contribute}</p>
+							<span>Missing info {contribute}</span>
 						)}
-					</div>
-				</BodyWrapper>
+						<ResultDiv>
+							<span>Recording location: </span>
+							{song.recording_location ? (
+								<span>{song.recording_location}</span>
+							) : (
+								<span>Missing info {contribute}</span>
+							)}
+						</ResultDiv>
+						<ResultDiv>
+							<h4>Release date: </h4>
+							{song.release_date_for_display ? (
+								<p>{song.release_date_for_display}</p>
+							) : (
+								<span>Missing info {contribute}</span>
+							)}
+						</ResultDiv>
+						<div>
+							<h4>Song relationships:</h4>
+							{song.song_relationships.length > 0 ? (
+								song.song_relationships.map((rel) => {
+									return (
+										<div key={uuidv4()}>
+											{rel.songs.length > 0 && (
+												<h4>
+													-{" "}
+													{rel.relationship_type
+														.trim()
+														.replace(/^\w/, (c) => c.toUpperCase())
+														.replace(/_/g, " ")}
+													:
+												</h4>
+											)}
+											{rel.songs.map((song) => {
+												return (
+													<Result to={song.api_path} key={uuidv4()}>
+														<p>{song.full_title}</p>
+													</Result>
+												);
+											})}
+										</div>
+									);
+								})
+							) : (
+								<span>Missing info {contribute}</span>
+							)}
+						</div>
+					</InfoWrapper>
+					<NotesAndRelated>
+						<H2>Notes</H2>
+						<NotesBox></NotesBox>
+						<RelatedSongs>
+							<H2>Related songs</H2>
+							<P>Beat</P>
+							<P>Harmony</P>
+							<P>Melody</P>
+							<P>Timbre</P>
+						</RelatedSongs>
+					</NotesAndRelated>
+				</Body>
 			</Wrapper>
 		);
 	}
@@ -219,15 +246,13 @@ const Wrapper = styled.div`
 	color: white;
 	border: solid 2px #363636;
 `;
-const BodyWrapper = styled.div`
-	margin: 0 20px;
-	max-height: 600px;
-	overflow: auto;
-`;
 const Head = styled.div`
 	background-color: lightgrey;
 	display: flex;
 	border-bottom: solid 2px #363636;
+	padding: 20px;
+	position: relative;
+	z-index: 1;
 `;
 const MainInfoHead = styled.div`
 	margin: 20px 56px;
@@ -254,6 +279,19 @@ const AlbumInfo = styled.div`
 	margin: 20px;
 	color: black;
 `;
+const Body = styled.div`
+	display: flex;
+	flex-direction: row;
+`;
+const H2 = styled.h2`
+	padding: 0 0 0 20px;
+`;
+const InfoWrapper = styled.div`
+	margin: 0 20px;
+	max-height: 600px;
+	width: 30%;
+	overflow: auto;
+`;
 const Featured = styled.div`
 	display: flex;
 	align-items: baseline;
@@ -266,15 +304,39 @@ const Contribute = styled.p`
 	color: blue;
 	cursor: pointer;
 `;
-const Result = styled.div`
+const ResultDiv = styled.div`
+	display: flex;
+	flex-direction: row;
+`;
+const Result = styled(Link)`
 	width: 100%;
 	display: flex;
 	justify-content: left;
 	border: none;
 	background-color: #68696e;
 	position: relative;
+	text-decoration: none;
+	color: white;
 	&:hover {
 		bottom: 1px;
 	}
+`;
+const NotesAndRelated = styled.div`
+	width: 70%;
+	border-left: solid 1px black;
+`;
+const NotesBox = styled.div`
+	margin: 16px;
+	border: solid lightgrey 1px;
+	border-radius: 5px;
+	background-color: #fffefa;
+	filter: drop-shadow(0 0 8px #1f2124);
+	min-height: 300px;
+`;
+const RelatedSongs = styled.div`
+	// margin: 16px;
+`;
+const P = styled.p`
+	margin: 20px;
 `;
 export default Songs;

@@ -1,2 +1,2 @@
 # SongCrawler
-A web-app that gathers info about songs from various sources
+A web-app that gathers info about songs and helps creating relations between them.

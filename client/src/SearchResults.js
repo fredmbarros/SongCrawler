@@ -46,6 +46,10 @@ const SearchResults = () => {
 			});
 	};
 
+	const searchDB = async () => {
+		// await
+	}
+
 	useEffect(() => {
 		searchGenius();
 	}, []);

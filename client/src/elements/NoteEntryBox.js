@@ -4,8 +4,7 @@ import styled from "styled-components";
 const NoteEntryBox = ({ setShowNoteEntryBox }) => {
 	const [noteText, setNoteText] = useState("");
 	const handleSubmit = () => {
-		if (noteText)
-		console.log(noteText);
+		if (noteText) console.log(noteText);
 		setShowNoteEntryBox(false);
 	};
 

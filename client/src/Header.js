@@ -1,4 +1,5 @@
 import { useState, useContext } from "react";
+import { Link } from "react-router-dom";
 import { SearchContext } from "./SearchContext";
 import styled from "styled-components";
 import Profile from "./Profile";
@@ -10,7 +11,7 @@ const Header = () => {
 	return (
 		<>
 			<SongCrawlerAndUser>
-				<SongCrawler>
+				<SongCrawler to="/">
 					<Icon src={logo} />
 					<NamesAndMottoDiv>
 						<H1>Song Crawler</H1>
@@ -34,11 +35,14 @@ const SongCrawlerAndUser = styled.div`
 	background-color: white;
 	color: black;
 	font-family: "Helvetica";
+	width: 100%;
 `;
-const SongCrawler = styled.div`
+const SongCrawler = styled(Link)`
 	display: flex;
 	align-items: center;
 	justify-content: flex-start;
+	text-decoration: none;
+	color: black;
 `;
 const Icon = styled.img`
 	height: 70px;
@@ -51,12 +55,14 @@ const NamesAndMottoDiv = styled.div`
 `;
 const H1 = styled.h1`
 	margin: 0 5px;
-	font-family: var(--font-heading);
-	margin-bottom: 0px;
+	// font-family: var(--font-heading);
+	font-size: 34px;
+	// margin-bottom: 2px;
 `;
 const H2 = styled.h2`
-	font-size: 14px;
-	margin: 5px 0 0 66px;
+	font-size: 12px;
+	margin: 5px 0 0 98px;
+	font-style: italic;
 `;
 const Auth = styled.div`
 	margin: 0 20px;

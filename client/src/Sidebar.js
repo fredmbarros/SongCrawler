@@ -61,6 +61,7 @@ const Bar = styled.div`
 	/* width: 227px; */
 	width: 100%;
 	border: solid #1f2124 2px;
+	height: 34px;
 `;
 const P = styled.p`
 	margin: 4px 0;
