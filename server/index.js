@@ -27,7 +27,7 @@ express()
 	.use(express.static("public"))
 
 	// endpoints
-	.get("/users/:userId", getUser)
+	.get("/users/:email", getUser)
 	.get("/users/songs/", getSong)
 	.get("/notes/:noteId", getNote)
 	.post("/users/", addUser)

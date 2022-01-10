@@ -8,6 +8,7 @@ import AddToLists from "./AddToLists";
 
 const Songs = () => {
 	const {
+		userId,
 		searchTerm,
 		setSearchTerm,
 		metaCategory,
@@ -26,8 +27,7 @@ const Songs = () => {
 		termToFetch,
 	} = useContext(SearchContext);
 	const { user, isAuthenticated, isLoading } = useAuth0();
-	const userId = user?.email;
-	const { songId } = useParams();
+	const { songIdGenius } = useParams();
 	const navigate = useNavigate();
 	const [songInUser, setSongInUser] = useState(false);
 
@@ -38,7 +38,7 @@ const Songs = () => {
 	);
 
 	const fetchSong = async () => {
-		await fetch("https://genius.p.rapidapi.com/songs/" + songId, {
+		await fetch("https://genius.p.rapidapi.com/songs/" + songIdGenius, {
 			method: "GET",
 			headers: {
 				"x-rapidapi-host": "genius.p.rapidapi.com",
@@ -50,7 +50,7 @@ const Songs = () => {
 			})
 			.then((data) => {
 				setSong(data.response.song);
-				localStorage.setItem("songId", songId);
+				localStorage.setItem("songIdGenius", songIdGenius);
 			})
 			.catch((err) => {
 				console.error(err);
@@ -61,7 +61,7 @@ const Songs = () => {
 			.then((data) => {
 				if (
 					data.user?.songs.find((song) => {
-						return song === songId;
+						return song === songIdGenius;
 					})
 				) {
 					setSongInUser(true);
@@ -71,7 +71,7 @@ const Songs = () => {
 
 	useEffect(() => {
 		fetchSong();
-	}, [songId]);
+	}, [songIdGenius]);
 
 	// how to solve this? a variable here sometimes isn't defined when the component mounts, so it breaks the code; I can't find the syntax to do inline and can't find a way to use the song.artist.etc variable down there in the styled.div because of the back-ticks - moreover, the thumbnail is inheriting what I define here for the bg
 	// let bgImg = {
@@ -92,7 +92,8 @@ const Songs = () => {
 							<H2>by {song.artist_names}</H2>
 							<p>Primary artist: {song.primary_artist.name}</p>
 							<AddToLists
-								songId={songId}
+								songId={uuidv4}
+								songIdGenius={songIdGenius}
 								songTitle={song.title}
 								artist={song.artist_names}
 								songInUser={songInUser}

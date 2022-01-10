@@ -16,16 +16,17 @@ const getUser = async (req, res) => {
 	const client = new MongoClient(MONGO_URI, options);
 	await client.connect();
 	const db = client.db("songcrawler");
-	const { userId } = req.params;
-	console.log(userId);
-	let user = {};
+	const email = req.params.email;
+	console.log(email);
+	let userInDb = {};
 	try {
-		user = await db.collection("users").findOne({ userId });
-		console.log(user);
-		res.status(200).json({ status: 200, userId, user });
+		userInDb = await db.collection("users").findOne({ email });
+		console.log("user in DB:");
+		console.log(userInDb);
+		res.status(200).json({ status: 200, userInDb });
 	} catch (err) {
 		console.log(err);
-		res.status(404).json({ status: 404, userId, user: "Not found" });
+		res.status(404).json({ status: 404, userInDb: "Error" });
 	} finally {
 		client.close();
 	}
@@ -67,7 +68,7 @@ const getNote = async (req, res) => {
 		client.close();
 	}
 };
-
+// updated
 const addUser = async (req, res) => {
 	const client = new MongoClient(MONGO_URI, options);
 	await client.connect();
@@ -77,13 +78,16 @@ const addUser = async (req, res) => {
 	}
 	try {
 		const user = {
-			userId: req.body.email,
+			userId: req.body.userId,
+			username: req.body.username,
+			email: req.body.email,
+			avatar: req.body.avatar,
 			songs: [],
-			constellations: [],
+			notes: [],
 		};
 		const checkUser = await db
 			.collection("users")
-			.findOne({ userId: user.userId });
+			.findOne({ email: user.email });
 		if (checkUser) {
 			return res.status(400).json({ status: 400, data: "User already exists" });
 		}

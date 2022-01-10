@@ -12,15 +12,15 @@ const LogoutButton = () => {
 };
 const Button = styled.button`
 	border: none;
+	margin: 2px;
+	padding: 0;
 	background-color: white;
 	font-size: 10px;
-	margin: 0 0 0 61px;
 	border-radius: 5px;
 	cursor: pointer;
 	&:hover {
 		border-radius: 5px;
 		border: solid lightgrey 1px;
-		bottom: 2px;
 	}
 `;
 export default LogoutButton;

@@ -11,25 +11,26 @@ const AddToLists = ({
 	songInUser,
 	setSongInUser,
 }) => {
-	const { userId } = useContext(SearchContext);
+	const { userId, username } = useContext(SearchContext);
 	const { user, isAuthenticated, isLoading } = useAuth0();
 	const [showNoteEntryBox, setShowNoteEntryBox] = useState(false);
+
 	const saveSong = () => {
-		if (user && isAuthenticated) {
+		if (username && isAuthenticated) {
 			fetch("/users/songs", {
 				method: "POST",
 				headers: {
 					Accept: "application/json",
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify({ userId: user.email, songId }),
+				body: JSON.stringify({ userId, songId }),
 			});
 		}
 		setSongInUser(true);
 	};
 
 	const deleteSong = () => {
-		if (user) {
+		if (username) {
 			fetch("/users/songs", {
 				method: "DELETE",
 				headers: {
@@ -78,7 +79,7 @@ const AddToLists = ({
 							<NoteEntryBox setShowNoteEntryBox={setShowNoteEntryBox} />
 						)}
 					</UserFiles>
-					<Button onClick={addToConstellation}>Constellation</Button>
+					<Button onClick={addToConstellation}>Constellate</Button>
 				</Wrapper>
 			) : (
 				<WrapperGreyedOutBtns>
@@ -87,7 +88,7 @@ const AddToLists = ({
 
 						<GreyedOutButton>Write notes</GreyedOutButton>
 					</UserFiles>
-					<GreyedOutButton>Constellation</GreyedOutButton>
+					<GreyedOutButton>Constellate</GreyedOutButton>
 					<SuggestLogin>Please login</SuggestLogin>
 				</WrapperGreyedOutBtns>
 			)}
@@ -108,7 +109,9 @@ const Button = styled.button`
 	cursor: pointer;
 	margin: 8px;
 	border-radius: 5px;
-	padding: 0px 6px;
+	padding: 2px 6px;
+	font-family: arial;
+	font-size: 16px;
 	position: relative;
 	&:hover {
 		bottom: 1px;
@@ -128,15 +131,15 @@ const GreyedOutButton = styled.span`
 	cursor: default;
 	margin: 8px;
 	border-radius: 5px;
-	padding: 0px 6px;
+	padding: 2px 6px;
+	font-family: arial;
+	font-size: 16px;
 `;
 const SuggestLogin = styled.span`
 	position: absolute;
 	display: none;
 	top: 10px;
 	left: 20px;
-	transition: 1000;
-	transition-time: 1000;
 	${WrapperGreyedOutBtns}:hover & {
 		display: block;
 		color: white;
