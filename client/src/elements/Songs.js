@@ -27,7 +27,7 @@ const Songs = () => {
 		termToFetch,
 	} = useContext(SearchContext);
 	const { user, isAuthenticated, isLoading } = useAuth0();
-	const { songIdGenius } = useParams();
+	const songIdGenius = useParams().songId;
 	const navigate = useNavigate();
 	const [songInUser, setSongInUser] = useState(false);
 
@@ -37,6 +37,7 @@ const Songs = () => {
 		</Contribute>
 	);
 
+	console.log(songIdGenius);
 	const fetchSong = async () => {
 		await fetch("https://genius.p.rapidapi.com/songs/" + songIdGenius, {
 			method: "GET",
@@ -78,7 +79,9 @@ const Songs = () => {
 	// 	backgroundImage: `url(${song.album.artist.header_image_url})`,
 	// 	filter: "contrast(70%) brightness(40%) blur(50%)",
 	// };
+
 	console.log(song);
+	
 	if (!song) {
 		return <p>Loading</p>;
 	} else {

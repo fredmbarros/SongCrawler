@@ -6,6 +6,7 @@ import NoteEntryBox from "./NoteEntryBox";
 
 const AddToLists = ({
 	songId,
+	songIdGenius,
 	songTitle,
 	artist,
 	songInUser,
@@ -17,14 +18,29 @@ const AddToLists = ({
 
 	const saveSong = () => {
 		if (username && isAuthenticated) {
-			fetch("/users/songs", {
+			fetch("/songs", {
 				method: "POST",
 				headers: {
 					Accept: "application/json",
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify({ userId, songId }),
+				body: JSON.stringify({
+					songId,
+					songTitle,
+					artist,
+					userId,
+					songIdGenius,
+				}),
 			});
+			fetch("/users/" + userId, {
+				method: "PUT",
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/json",
+				},
+				body: { songId },
+			});
+			// still missing an updateSong-fetch to add the userId to the song - in principle it's not important, but who knows if it can come in handy later to know every user who has saved a song?
 		}
 		setSongInUser(true);
 	};

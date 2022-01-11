@@ -58,16 +58,13 @@ const SearchResults = () => {
 		<>
 			<ul>
 				{rawSearchResults.map((item, index) => {
-					console.log(item.result.api_path);
+					// console.log(item.result.api_path);
 
 					return (
 						<LI key={uuidv4()}>
 							<Result
 								as={Link}
 								to={item.result.api_path}
-								// onClick={() => {
-								// 	toRender(rawSearchResults[index].result);
-								// }}
 							>
 								<IMG src={item.result.header_image_thumbnail_url} />
 								<TitleAndArtist>{item.result.full_title}</TitleAndArtist>
