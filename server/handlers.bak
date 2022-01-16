@@ -12,110 +12,20 @@ const options = {
 	useUnifiedTopology: true,
 };
 
-// new handlers
-const saveSong = async (req, res) => {
-	// saveSong, 1, adds the song to the DB + adds user to song^* OR adds user to existing song in DB; 2, adds song to user
-	//* Songs have an array listing the users that saved them. I have no use for it now, but it may come in handy down the road.
-
-	const client = new MongoClient(MONGO_URI, options);
-	await client.connect();
-	const db = client.db("songcrawler");
-	const songs = db.collection("songs");
-	const users = db.collection("users");
-	// querying song by artist and title - better not to depend on songIdGenius
-	const query = {
-		artistName: req.body.artistName,
-		songTitle: req.body.songTitle,
-	};
-
-	try {
-		// saveSong pt. 1 - working on SONG
-		const songInDb = await songs.findOne(query, options);
-
-		if (!songInDb) {
-			// creating song in DB
-			const addSongToDb = {
-				songId: req.body.songId,
-				songIdGenius: req.body.songIdGenius,
-				songTitle: req.body.songTitle,
-				artistName: req.body.artistName,
-				the: req.body.the,
-				users: [req.body.userId],
-				constellation: [],
-			};
-			await songs.insertOne(addSongToDb);
-			res
-				.status(200)
-				.json({ status: 200, data: "Song added to DB and user added to song" });
-		} else {
-			// checking if userId is in song.users
-			if (songInDb.users.includes(req.body.userId)) {
-				return res
-					.status(200)
-					.json({ status: 200, data: "userId already in song.users" });
-			}
-			// adding user to existing song in DB
-			await songs.updateOne(query, { $push: { users: req.body.userId } });
-			res.status(200).json({ status: 200, data: "userId added to song.users" });
-		}
-
-		// saveSong pt. 2 - working on USER
-		const user = await users.findOne({ userId: req.body.userId });
-		// just to be sure, if user doesn't exist:
-		if (!user) {
-			return res.status(400).json({ status: 400, data: "User doesn't exist" });
-		} else {
-			// user existing, update it inserting songId into its "songs" array
-			await users.updateOne(
-				{ userId: req.body.userId },
-				{ $push: { songs: req.body.songId } }
-			);
-			return res
-				.status(200)
-				.json({ status: 200, data: "Song added to user.songs" });
-		}
-	} catch (err) {
-		res.status(500).json({ status: 500, data: req.body, message: err.message });
-	}
-	client.close();
-};
-
-// I need a separate getUserByEmail bc even though userIds have to be consistent so that I can add them to notes, songs, constellations etc., emails can be changed upon user's request. At the same time, when checking a new user, email is the only thing consistent I have in advance, as it's more unique than name - but of course anyone can create new accounts with different emails, as it happens everywhere
-const getUserByEmail = async (req, res) => {
-	const client = new MongoClient(MONGO_URI, options);
-	await client.connect();
-	const db = client.db("songcrawler");
-	const { email } = req.params;
-	console.log("req.params:");
-	console.log(req.params);
-	// let userInDb = {};
-	try {
-		const userInDb = await db.collection("users").findOne({ email });
-		console.log("userInDb:");
-		console.log(userInDb);
-		res.status(200).json({ status: 200, userInDb });
-	} catch (err) {
-		res.status(404).json({ status: 404, userInDb: "Error" });
-	} finally {
-		client.close();
-	}
-};
-
-// old handlers
 const getUser = async (req, res) => {
 	const client = new MongoClient(MONGO_URI, options);
 	await client.connect();
 	const db = client.db("songcrawler");
-	const { userId } = req.params;
-	console.log("req.params:");
-	console.log(req.params);
-	// let userInDb = {};
+	const email = req.params.email;
+	console.log(email);
+	let userInDb = {};
 	try {
-		const userInDb = await db.collection("users").findOne({ userId });
-		console.log("userInDb:");
+		userInDb = await db.collection("users").findOne({ email });
+		console.log("user in DB:");
 		console.log(userInDb);
 		res.status(200).json({ status: 200, userInDb });
 	} catch (err) {
+		console.log(err);
 		res.status(404).json({ status: 404, userInDb: "Error" });
 	} finally {
 		client.close();
@@ -189,7 +99,7 @@ const addUser = async (req, res) => {
 	client.close();
 };
 
-const addSongToUser = async (req, res) => {
+const addSong = async (req, res) => {
 	const client = new MongoClient(MONGO_URI, options);
 	await client.connect();
 	const db = client.db("songcrawler");
@@ -197,23 +107,19 @@ const addSongToUser = async (req, res) => {
 		return res.status(400).json({ status: 400, data: "Email/songId required" });
 	}
 	try {
-		// adding song to user
-		console.log(req.body.songId);
-		const queryUserId = { userId: req.body.userId };
-		const querySongId = { songId: req.body.songId };
-		const checkUser = await db.collection("users").findOne(queryUserId);
-		console.log(checkUser.songs);
-		// if (!checkUser) {
-		// 	return res.status(400).json({ status: 400, data: "User not found" });
-		// }
-		// // CHECK BELOW
-		// if (!checkUser.songs.findOne(querySongId)) {
-		// 	checkUser.songs.push(req.body.songId);
-		// }
-		// const songs = checkUser.songs;
-		// const newValues = { $set: { songs } };
-		// await db.collection("users").updateOne(query, newValues);
-		// res.status(201).json({ status: 201, data: req.body });
+		const userId = req.body.userId;
+		const query = { userId };
+		const checkUser = await db
+			.collection("users")
+			.findOne({ userId: req.body.userId });
+		if (!checkUser) {
+			return res.status(400).json({ status: 400, data: "User not found" });
+		}
+		checkUser.songs.push(req.body.songId);
+		const songs = checkUser.songs;
+		const newValues = { $set: { songs } };
+		await db.collection("users").updateOne(query, newValues);
+		res.status(201).json({ status: 201, data: req.body });
 	} catch (err) {
 		res.status(500).json({ status: 500, data: req.body, message: err.message });
 	}
@@ -246,7 +152,6 @@ const updateUser = async (req, res) => {
 	const userId = req.params.userId;
 
 	try {
-		// HAVE TO CHECK IF IT'S REALLY ADDING A SONG, AND NOT SUBSTITUTING ONE FOR THE OTHER
 		const updatingUser = await db
 			.collection("users")
 			.updateOne({ userId }, { $set: req.body });
@@ -365,15 +270,11 @@ const deleteSong = async (req, res) => {
 };
 
 module.exports = {
-	// new handlers
-	saveSong,
-	// old handlers
 	getUser,
-	getUserByEmail,
 	getSong,
 	getNote,
 	addUser,
-	addSongToUser,
+	addSong,
 	addNote,
 	deleteUser,
 	deleteSong,

@@ -8,7 +8,7 @@ import AddToLists from "./AddToLists";
 
 const Songs = () => {
 	const {
-		userId,
+		// userId,
 		searchTerm,
 		setSearchTerm,
 		metaCategory,
@@ -51,21 +51,27 @@ const Songs = () => {
 			})
 			.then((data) => {
 				setSong(data.response.song);
-				localStorage.setItem("songIdGenius", songIdGenius);
+				window.localStorage.setItem("songIdGenius", songIdGenius);
 			})
 			.catch((err) => {
 				console.error(err);
 			});
+
 		// fetching user information to get the list of songs they've saved
-		fetch(`/users/${userId}`)
+		const userId = window.localStorage.getItem("userId");
+		console.log("userId:");
+		console.log(userId);
+		await fetch(`/users/${userId}`)
 			.then((res) => res.json())
 			.then((data) => {
+				console.log("data:");
+				console.log(data);
 				if (
-					data.user?.songs.find((song) => {
+					data.userInDb.songs.find((song) => {
 						return song === songIdGenius;
 					})
 				) {
-					setSongInUser(true);
+					setSongInUser(songIdGenius);
 				}
 			});
 	};
@@ -81,7 +87,7 @@ const Songs = () => {
 	// };
 
 	console.log(song);
-	
+
 	if (!song) {
 		return <p>Loading</p>;
 	} else {
@@ -95,7 +101,7 @@ const Songs = () => {
 							<H2>by {song.artist_names}</H2>
 							<p>Primary artist: {song.primary_artist.name}</p>
 							<AddToLists
-								songId={uuidv4}
+								songId={uuidv4()}
 								songIdGenius={songIdGenius}
 								songTitle={song.title}
 								artist={song.artist_names}
@@ -103,6 +109,7 @@ const Songs = () => {
 								setSongInUser={setSongInUser}
 							/>
 						</MainInfoHead>
+						<p>Related songs - listar tb samples e afins</p>
 						<AlbumInfo>
 							<p>Album:</p>
 							{song.album ? (

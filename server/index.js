@@ -6,11 +6,15 @@ const morgan = require("morgan");
 
 // import modules
 const {
+	// new
+	saveSong,
+	getUserByEmail,
+	// old
 	getUser,
 	getSong,
 	getNote,
 	addUser,
-	addSong,
+	addSongToUser,
 	addNote,
 	updateUser,
 	updateSong,
@@ -27,11 +31,14 @@ express()
 	.use(express.static("public"))
 
 	// endpoints
-	.get("/users/:email", getUser)
+	// new
+	.post("/songs", saveSong)
+	.get("/users/email/:email", getUserByEmail)
+	// old
+	.get("/users/:userId", getUser)
 	.get("/users/songs/", getSong)
 	.get("/notes/:noteId", getNote)
 	.post("/users/", addUser)
-	.post("/songs", addSong)
 	.post("/notes", addNote)
 	.put("/users/:userId", updateUser)
 	.put("/songs/:songId", updateSong)

@@ -44,8 +44,8 @@ const Profile = () => {
 
 	const currentUser = async () => {
 		if (isAuthenticated) {
-			// checking if user exists in db
-			fetch("/users/" + user.email)
+			// checking if user exists in db THROUGH EMAIL (userId doesn't exist when you have a new user)
+			fetch("/users/email/" + user.email)
 				.then((res) => res.json())
 				.then((data) => {
 					let { userInDb } = data;
@@ -59,6 +59,7 @@ const Profile = () => {
 						// adding to localStorage to be used elsewhere
 						window.localStorage.setItem("userId", userInDb.userId);
 						window.localStorage.setItem("username", userInDb.name);
+						window.localStorage.setItem("email", userInDb.email);
 					} else {
 						console.log("from auth0");
 						newUserId = uuidv4();
