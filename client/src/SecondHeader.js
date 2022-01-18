@@ -1,4 +1,5 @@
 import { useState, useContext } from "react";
+import { useLocation } from "react-router-dom";
 import { SearchContext } from "./SearchContext";
 import styled from "styled-components";
 // import React from "react";
@@ -7,12 +8,13 @@ import Searchbox from "./Searchbox";
 import Sidebar from "./Sidebar";
 
 const SecondHeader = () => {
-	const { hideSearchBox } = useContext(SearchContext);
+	const { pathname } = useLocation();
+	console.log(pathname);
 	return (
 		<>
 			<Head>
 				<Sidebar />
-				{hideSearchBox && <Searchbox />}
+				{pathname !== "/" && <Searchbox />}
 			</Head>
 		</>
 	);

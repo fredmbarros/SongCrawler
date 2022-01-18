@@ -56,6 +56,7 @@ const BoxAndButton = styled.div`
 	width: 280px;
 	display: flex;
 	align-items: center;
+	border-top: #1f2124 1px solid;
 `;
 const InputBox = styled.input`
 	padding: 5px;

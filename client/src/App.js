@@ -1,5 +1,10 @@
 import { useContext, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+	BrowserRouter as Router,
+	Routes,
+	Route,
+	useLocation,
+} from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import styled from "styled-components";
 import Header from "./Header";
@@ -9,6 +14,7 @@ import Searchbox from "./Searchbox";
 import Sidebar from "./Sidebar";
 import { SearchContext } from "./SearchContext";
 import Start from "./Start";
+import SecondHeader from "./SecondHeader";
 
 import Album from "./elements/Album";
 import Artist from "./elements/Artist";
@@ -32,10 +38,11 @@ const App = () => {
 			<Router>
 				<Header />
 				<Wrapper>
-					<SecondHeader>
+					{/* <SecondHeader>
 						<Sidebar />
 						<Searchbox />
-					</SecondHeader>
+					</SecondHeader> */}
+					<SecondHeader />
 					<Routes>
 						<Route exact path="/home" element={<Home />} />
 						<Route exact path="/" element={<Start />} />
@@ -59,10 +66,10 @@ const GlobalStyles = styled.div`
 const Wrapper = styled.div`
 	/* display: flex; */
 `;
-const SecondHeader = styled.div`
-	display: flex;
-	box-shadow: 0 2px 12px 1px #3e4042;
-	position: relative;
-	z-index: 2;
-`;
+// const SecondHeader = styled.div`
+// 	display: flex;
+// 	box-shadow: 0 2px 12px 1px #3e4042;
+// 	position: relative;
+// 	z-index: 2;
+// `;
 export default App;
