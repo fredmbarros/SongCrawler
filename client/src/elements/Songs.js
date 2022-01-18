@@ -15,6 +15,7 @@ const Songs = () => {
 		setMetaCategory,
 		song,
 		setSong,
+		songId,
 		artist,
 		setArtist,
 		album,
@@ -38,6 +39,10 @@ const Songs = () => {
 	);
 
 	console.log(songIdGenius);
+	// first check song in DB
+	// CHECKING SONG IN DB - query songIdGenius, se não bater, query songTitle && artistName - recuperar daí o songId
+
+	// fetch song from Genius:
 	const fetchSong = async () => {
 		await fetch("https://genius.p.rapidapi.com/songs/" + songIdGenius, {
 			method: "GET",
@@ -58,6 +63,7 @@ const Songs = () => {
 			});
 
 		// fetching user information to get the list of songs they've saved
+		// then find this specific song through songId
 		const userId = window.localStorage.getItem("userId");
 		console.log("userId:");
 		console.log(userId);
@@ -68,7 +74,7 @@ const Songs = () => {
 				console.log(data);
 				if (
 					data.userInDb.songs.find((song) => {
-						return song === songIdGenius;
+						return song === songId;
 					})
 				) {
 					setSongInUser(songIdGenius);
