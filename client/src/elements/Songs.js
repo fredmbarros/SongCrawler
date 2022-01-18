@@ -115,26 +115,14 @@ const Songs = () => {
 								setSongInUser={setSongInUser}
 							/>
 						</MainInfoHead>
-						<p>Related songs - listar tb samples e afins</p>
-						<AlbumInfo>
-							<p>Album:</p>
-							{song.album ? (
-								<>
-									<AlbumThumbnail
-										src={
-											song.album.cover_art_url ? (
-												song.album.cover_art_url
-											) : (
-												<p>Cover not available</p>
-											)
-										}></AlbumThumbnail>
-									<p>{song.album.name}</p>
-									<p>by {song.album.artist.name}</p>
-								</>
-							) : (
-								<span>Missing info {contribute}</span>
-							)}
-						</AlbumInfo>
+						<RelatedSongs>
+							<H2>Related songs</H2>
+							<P>Beat</P>
+							<P>Harmony</P>
+							<P>Melody</P>
+							<P>Timbre</P>
+							<P>Genre</P>
+						</RelatedSongs>
 					</NameAndPicDiv>
 				</Head>
 
@@ -154,16 +142,23 @@ const Songs = () => {
 							</div>
 						</div>
 
-						{/* {song.featured_artists.length > 0 &&
-						song.featured_artists.map((artist) => {
-							return (
-								<Featured key={uuidv4()}>
-									<h4>Featured:</h4>
-									<p>{artist.name}</p>
-									<ThumbnailSmall src={artist.image_url}></ThumbnailSmall>
-								</Featured>
-							);
-						})} */}
+						<p>Album:</p>
+						{song.album ? (
+							<>
+								<AlbumThumbnail
+									src={
+										song.album.cover_art_url ? (
+											song.album.cover_art_url
+										) : (
+											<p>Cover not available</p>
+										)
+									}></AlbumThumbnail>
+								<p>{song.album.name}</p>
+								<p>by {song.album.artist.name}</p>
+							</>
+						) : (
+							<span>Missing info {contribute}</span>
+						)}
 
 						<h4>Personnel:</h4>
 						{song.producer_artists.length > 0 ? (
@@ -244,13 +239,13 @@ const Songs = () => {
 					<NotesAndRelated>
 						<H2>Notes</H2>
 						<NotesBox></NotesBox>
-						<RelatedSongs>
+						{/* <RelatedSongs>
 							<H2>Related songs</H2>
 							<P>Beat</P>
 							<P>Harmony</P>
 							<P>Melody</P>
 							<P>Timbre</P>
-						</RelatedSongs>
+						</RelatedSongs> */}
 					</NotesAndRelated>
 				</Body>
 			</Wrapper>
@@ -289,12 +284,6 @@ const AlbumThumbnail = styled.img`
 	height: 140px;
 	width: auto;
 	filter: drop-shadow(0 0 6px #1f2124);
-`;
-const AlbumInfo = styled.div`
-	width: 160px;
-	padding: 20px;
-	margin: 20px;
-	color: black;
 `;
 const Body = styled.div`
 	display: flex;
@@ -351,7 +340,8 @@ const NotesBox = styled.div`
 	min-height: 300px;
 `;
 const RelatedSongs = styled.div`
-	// margin: 16px;
+	margin: 20px 56px;
+	color: black;
 `;
 const P = styled.p`
 	margin: 20px;

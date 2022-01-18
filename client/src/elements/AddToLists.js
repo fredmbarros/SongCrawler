@@ -73,13 +73,13 @@ const AddToLists = ({
 		setSongInUser(false);
 	};
 
-	const writeNotes = () => {
+	const makeANote = () => {
 		// **if** is part of saved songs
 		setShowNoteEntryBox(true);
 		saveSong();
 	};
 
-	const addToConstellation = () => {
+	const constellate = () => {
 		// FORGET WHAT'S BELOW - THIS JUST TAKES TO THE CONSTELLATION CREATION PAGE WHERE THE CRITERIA IS SHOWN AND CAN BE SELECTED ALONG WITH THE NEED TO INDICATE OTHER SONGS
 		// This one is complex. Ideally, it would consider (at least) four possible basic links between two songs - beat, harmony, melody, and timbre - and create a graphic where songs floating around have color-coded lines connecting them according to those links (ideally, these links should be (and be represented as) stronger or weaker, depending on the degree of affinity). For now, let's just show some dummy constellations created arbitrarily and allow the user to add/remove the song to/from them.
 	};
@@ -104,19 +104,19 @@ const AddToLists = ({
 								Save song
 							</Button>
 						)}
-						<Button onClick={writeNotes}>Write notes</Button>
+						<Button onClick={makeANote}>Make a note</Button>
 						{showNoteEntryBox && (
 							<NoteEntryBox setShowNoteEntryBox={setShowNoteEntryBox} />
 						)}
 					</UserFiles>
-					<Button onClick={addToConstellation}>Constellate</Button>
+					<Button onClick={constellate}>Constellate</Button>
 				</Wrapper>
 			) : (
 				<WrapperGreyedOutBtns>
 					<UserFiles>
 						<GreyedOutButton>Save song</GreyedOutButton>
 
-						<GreyedOutButton>Write notes</GreyedOutButton>
+						<GreyedOutButton>Make a note</GreyedOutButton>
 					</UserFiles>
 					<GreyedOutButton>Constellate</GreyedOutButton>
 					<SuggestLogin>Please login</SuggestLogin>
