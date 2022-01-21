@@ -101,6 +101,50 @@ const getUserByEmail = async (req, res) => {
 	}
 };
 
+const getSongInDb = async (req, res) => {
+	const client = new MongoClient(MONGO_URI, options);
+	await client.connect();
+	const db = client.db("songcrawler");
+	const songs = db.collection("songs");
+	const { songId } = req.params;
+	console.log(songId);
+	let songBySongId;
+	let songByNameAndTitle;
+	try {
+		songBySongId = await songs.findOne({ songId });
+		console.log(songBySongId);
+		if (!songBySongId) {
+			songByNameAndTitle = await songs.findOne({ })
+		}
+		res.status(200).json({ status: 200, songId, song });
+	} catch (err) {
+		console.log(err);
+		res.status(404).json({ status: 404, songId, song: "Not found" });
+	} finally {
+		client.close();
+	}
+};
+
+// to be revised when DB works again
+const addNote = async (req, res) => {
+	const client = new MongoClient(MONGO_URI, options);
+	await client.connect();
+	const db = client.db("songcrawler");
+	try {
+		const note = {
+			noteId: req.body.noteId,
+			songId: req.body.songId,
+			userId: req.body.userId,
+			content: req.body.note,
+		};
+		const addingNote = db.collection("songs").insertOne(note);
+		res.status(201).json({ status: 201, data: req.body });
+	} catch (err) {
+		res.status(500).json({ status: 500, data: req.body, message: err.message });
+	}
+	client.close();
+};
+
 // old handlers
 const getUser = async (req, res) => {
 	const client = new MongoClient(MONGO_URI, options);
@@ -220,24 +264,6 @@ const addSongToUser = async (req, res) => {
 	client.close();
 };
 
-const addNote = async (req, res) => {
-	const client = new MongoClient(MONGO_URI, options);
-	await client.connect();
-	const db = client.db("songcrawler");
-	try {
-		const note = {
-			noteId: req.body.noteId,
-			songId: req.body.songId,
-			userId: req.body.userId,
-			content: req.body.note,
-		};
-		const addingNote = db.collection("notes").insertOne(note);
-		res.status(201).json({ status: 201, data: req.body });
-	} catch (err) {
-		res.status(500).json({ status: 500, data: req.body, message: err.message });
-	}
-	client.close();
-};
 
 const updateUser = async (req, res) => {
 	const client = new MongoClient(MONGO_URI, options);

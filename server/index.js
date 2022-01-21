@@ -34,6 +34,7 @@ express()
 	// new
 	.post("/songs", saveSong)
 	.get("/users/email/:email", getUserByEmail)
+	// .get("/songs/:songId", getSongInDb)
 	// old
 	.get("/users/:userId", getUser)
 	.get("/users/songs/", getSong)

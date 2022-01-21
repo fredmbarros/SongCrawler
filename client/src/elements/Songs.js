@@ -31,15 +31,27 @@ const Songs = () => {
 	const songIdGenius = useParams().songId;
 	const navigate = useNavigate();
 	const [songInUser, setSongInUser] = useState(false);
+	const [songNotes, setSongNotes] = useState();
 
 	const contribute = (
 		<Contribute onClick={() => navigate("/contribute")}>
 			- contribute?
 		</Contribute>
 	);
-
 	console.log(songIdGenius);
 	// first check song in DB
+
+	// const fetchSongInDB = async () => {
+	// await fetch(`/songs`)
+	// etc.
+	// let songInDb = data;
+
+	// if (songInDB) {
+	//	songId = songInDb.songId;
+	//  setSongNotes = songInDb.notes;
+	// } else {
+	//	songId = uuidv4();
+	// }
 	// CHECKING SONG IN DB - query songIdGenius, se não bater, query songTitle && artistName - recuperar daí o songId
 
 	// fetch song from Genius:
@@ -65,8 +77,6 @@ const Songs = () => {
 		// fetching user information to get the list of songs they've saved
 		// then find this specific song through songId
 		const userId = window.localStorage.getItem("userId");
-		console.log("userId:");
-		console.log(userId);
 		await fetch(`/users/${userId}`)
 			.then((res) => res.json())
 			.then((data) => {
@@ -86,14 +96,6 @@ const Songs = () => {
 		fetchSong();
 	}, [songIdGenius]);
 
-	// how to solve this? a variable here sometimes isn't defined when the component mounts, so it breaks the code; I can't find the syntax to do inline and can't find a way to use the song.artist.etc variable down there in the styled.div because of the back-ticks - moreover, the thumbnail is inheriting what I define here for the bg
-	// let bgImg = {
-	// 	backgroundImage: `url(${song.album.artist.header_image_url})`,
-	// 	filter: "contrast(70%) brightness(40%) blur(50%)",
-	// };
-
-	console.log(song);
-
 	if (!song) {
 		return <p>Loading</p>;
 	} else {
@@ -107,7 +109,8 @@ const Songs = () => {
 							<H2>by {song.artist_names}</H2>
 							<p>Primary artist: {song.primary_artist.name}</p>
 							<AddToLists
-								songId={uuidv4()}
+								// songId={uuidv4()}
+								songId={songId}
 								songIdGenius={songIdGenius}
 								songTitle={song.title}
 								artist={song.artist_names}
@@ -116,11 +119,11 @@ const Songs = () => {
 							/>
 						</MainInfoHead>
 						<RelatedSongs>
-							<H2>Related songs</H2>
+							<H2>Constellation</H2>
 							<P>Beat</P>
-							<P>Harmony</P>
-							<P>Melody</P>
-							<P>Timbre</P>
+							<P>Tune/Riff</P>
+							<P>Chords</P>
+							<P>Overall sound</P>
 							<P>Genre</P>
 						</RelatedSongs>
 					</NameAndPicDiv>
@@ -238,14 +241,10 @@ const Songs = () => {
 					</InfoWrapper>
 					<NotesAndRelated>
 						<H2>Notes</H2>
-						<NotesBox></NotesBox>
-						{/* <RelatedSongs>
-							<H2>Related songs</H2>
-							<P>Beat</P>
-							<P>Harmony</P>
-							<P>Melody</P>
-							<P>Timbre</P>
-						</RelatedSongs> */}
+						<NotesBox>
+							<P>Song Notes</P>
+							{/* map over songIdNotes */}
+						</NotesBox>
 					</NotesAndRelated>
 				</Body>
 			</Wrapper>
@@ -328,7 +327,7 @@ const Result = styled(Link)`
 	}
 `;
 const NotesAndRelated = styled.div`
-	width: 70%;
+	width: 50%;
 	border-left: solid 1px black;
 `;
 const NotesBox = styled.div`
@@ -338,6 +337,7 @@ const NotesBox = styled.div`
 	background-color: #fffefa;
 	filter: drop-shadow(0 0 8px #1f2124);
 	min-height: 300px;
+	color: black;
 `;
 const RelatedSongs = styled.div`
 	margin: 20px 56px;

@@ -15,10 +15,11 @@ const AddToLists = ({
 	const { userId, username } = useContext(SearchContext);
 	const { user, isAuthenticated, isLoading } = useAuth0();
 	const [showNoteEntryBox, setShowNoteEntryBox] = useState(false);
+	const [noteText, setNoteText] = useState("");
 	let the;
 	let artistName;
 	if (artist) {
-		if (artist.substring(0, 3).toLowerCase === "the") {
+		if (artist.substring(0, 3).toLowerCase() === "the") {
 			artistName = artist.slice(4, artist.length);
 			the = "The ";
 		} else {
@@ -46,14 +47,14 @@ const AddToLists = ({
 				}),
 			});
 			// update user - add song to user's saved songs in the user object
-			// fetch("/users/" + userId, {
-			// 	method: "PUT",
-			// 	headers: {
-			// 		Accept: "application/json",
-			// 		"Content-Type": "application/json",
-			// 	},
-			// 	body: { songId },
-			// });
+			fetch("/users/" + userId, {
+				method: "PUT",
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/json",
+				},
+				body: { songId },
+			});
 			// still missing an updateSong-fetch to add the userId to the song - in principle it's not important, but who knows if it can come in handy later to know every user who has saved a song?
 		}
 		setSongInUser(true);
@@ -74,7 +75,6 @@ const AddToLists = ({
 	};
 
 	const makeANote = () => {
-		// **if** is part of saved songs
 		setShowNoteEntryBox(true);
 		saveSong();
 	};
@@ -106,7 +106,12 @@ const AddToLists = ({
 						)}
 						<Button onClick={makeANote}>Make a note</Button>
 						{showNoteEntryBox && (
-							<NoteEntryBox setShowNoteEntryBox={setShowNoteEntryBox} />
+							<NoteEntryBox
+								setShowNoteEntryBox={setShowNoteEntryBox}
+								setNoteText={setNoteText}
+								noteText={noteText}>
+								{noteText}
+							</NoteEntryBox>
 						)}
 					</UserFiles>
 					<Button onClick={constellate}>Constellate</Button>

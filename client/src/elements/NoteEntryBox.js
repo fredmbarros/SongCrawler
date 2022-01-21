@@ -1,10 +1,12 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-const NoteEntryBox = ({ setShowNoteEntryBox }) => {
-	const [noteText, setNoteText] = useState("");
+const NoteEntryBox = ({ setShowNoteEntryBox, setNoteText, noteText }) => {
 	const handleSubmit = () => {
-		if (noteText) console.log(noteText);
+		if (noteText) {
+			console.log(noteText);
+			fetch("/songs/notes")
+		} 
 		setShowNoteEntryBox(false);
 	};
 
