@@ -6,6 +6,7 @@ import Home from "./Home";
 import SearchResults from "./SearchResults";
 import Start from "./Start";
 import SecondHeader from "./SecondHeader";
+import GlobalStyles from "./GlobalStyles";
 
 import List from "./elements/List";
 import Song from "./elements/Songs";
@@ -42,9 +43,6 @@ const App = () => {
 	);
 };
 
-const GlobalStyles = styled.div`
-	// to be imported
-`;
 const Wrapper = styled.div`
 	/* display: flex; */
 `;

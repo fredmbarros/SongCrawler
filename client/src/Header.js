@@ -34,7 +34,6 @@ const SongCrawlerAndUser = styled.div`
 	border-bottom: solid 4px #960000;
 	background-color: white;
 	color: black;
-	font-family: "Helvetica";
 	width: 100%;
 `;
 const SongCrawler = styled(Link)`
@@ -55,18 +54,15 @@ const NamesAndMottoDiv = styled.div`
 `;
 const H1 = styled.h1`
 	margin: 0 5px;
-	// font-family: var(--font-heading);
 	font-size: 34px;
 	// margin-bottom: 2px;
 `;
 const H2 = styled.h2`
 	font-size: 12px;
 	margin: 5px 0 0 98px;
-	font-style: italic;
 `;
 const Auth = styled.div`
 	margin: 0 20px;
-	font-family: var(--font-body);
 `;
 const SearchboxDiv = styled.div`
 	float: right;
