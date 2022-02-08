@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { SearchContext } from "./SearchContext";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
+import RenderResults from "./components/RenderResults";
 
 const SearchResults = () => {
 	const {
@@ -56,24 +57,7 @@ const SearchResults = () => {
 
 	return (
 		<>
-			<ul>
-				{rawSearchResults.map((item, index) => {
-					// console.log(item.result.api_path);
-
-					return (
-						<LI key={uuidv4()}>
-							<Result
-								as={Link}
-								to={item.result.api_path}
-							>
-								<IMG src={item.result.header_image_thumbnail_url} />
-								<TitleAndArtist>{item.result.full_title}</TitleAndArtist>
-							</Result>
-							<DIV></DIV>
-						</LI>
-					);
-				})}
-			</ul>
+			<RenderResults resultsToRender={rawSearchResults}/>
 		</>
 	);
 };

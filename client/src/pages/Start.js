@@ -1,13 +1,10 @@
 import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { SearchContext } from "./SearchContext";
+import { SearchContext } from "../SearchContext";
 import { useAuth0 } from "@auth0/auth0-react";
 import styled from "styled-components";
-import Header from "./Header";
-import Main from "./lixo/Main";
-import SearchResults from "./SearchResults";
-import Sidebar from "./Sidebar";
-import Searchbox from "./Searchbox";
+import SearchResults from "../SearchResults";
+import Searchbox from "../Searchbox";
 
 const Start = () => {
 	const {
@@ -74,12 +71,11 @@ const Wrapper = styled.div``;
 const SearchElement = styled.div`
 	width: 100vw;
 	height: 100vh;
-	background-image: linear-gradient(var(--color-BgGradientStart), black);
+	// background-image: linear-gradient(var(--color-BgGradientStart), black);
 `;
 const Form = styled.div`
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
 	align-items: center;
 	padding: 30vh 0;
 `;

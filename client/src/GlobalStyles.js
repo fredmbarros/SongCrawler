@@ -11,6 +11,8 @@ export default createGlobalStyle`
     box-sizing: border-box;
     font-size: 100%;
     vertical-align: baseline;
+    // background-color: var(--color-BgGradientStart);
+    color: var(--color-regularText);
 }
 
 /* custom variables */

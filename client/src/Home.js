@@ -77,7 +77,6 @@ const SearchElement = styled.div`
 	width: 100vw;
 	height: 100vh;
 	background-color: lightgrey;
-	/* background-image: url("./assets/fender-tweed.jpg"); */
 `;
 const Form = styled.div`
 	display: flex;
