@@ -9,6 +9,7 @@ const {
 	// new
 	saveSong,
 	getUserByEmail,
+	getSongInDbByApiId,
 	// old
 	getUser,
 	getSong,
@@ -34,6 +35,7 @@ express()
 	// new
 	.post("/songs", saveSong)
 	.get("/users/email/:email", getUserByEmail)
+	.get("songs/songByApiId/:geniusId", getSongInDbByApiId)
 	// .get("/songs/:songId", getSongInDb)
 	// old
 	.get("/users/:userId", getUser)

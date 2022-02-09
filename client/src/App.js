@@ -7,6 +7,7 @@ import Start from "./pages/Start";
 import Weekly from "./pages/Weekly";
 import Game from "./pages/Game";
 import NavBar from "./components/NavBar";
+import SongInfo from "./pages/SongInfo";
 import GlobalStyles from "./GlobalStyles";
 
 const App = () => {
@@ -23,7 +24,8 @@ const App = () => {
 						<Route exact path="/search" element={<Start />} />
 						<Route exact path="/weekly" element={<Weekly />} />
 						<Route exact path="/game" element={<Game />} />
-						<Route exact path="/results" element={<SearchResults />} />
+						<Route path="/search/results" element={<SearchResults />} />
+						<Route path="/songs/:geniusId" element={<SongInfo />} />
 					</Routes>
 				</Wrapper>
 			</Router>

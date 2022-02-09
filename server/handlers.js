@@ -80,6 +80,31 @@ const saveSong = async (req, res) => {
 	client.close();
 };
 
+// While there's not much added to the DB, it's better to just use the API (Genius, in this case) as the source for the searches and then search the DB using the API-ID (saved as a separate ID in the song's object in the DB), hence the need for this handler:
+const getSongInDbByApiId = async (req, res) => {
+	const client = new MongoClient(MONGO_URI, options);
+	await client.connect();
+	const db = client.db("songcrawler");
+	const songs = db.collection("songs");
+	const { geniusId } = req.params;
+	console.log(geniusId);
+	try {
+		songByApiId = await songs.findOne({ geniusId });
+		console.log(songByApiId);
+		if (!songByApiId) {
+			songByNameAndTitle = await songs.findOne({ })
+		}
+		res.status(200).json({ status: 200, songId, song });
+	} catch (err) {
+		console.log(err);
+		res.status(404).json({ status: 404, songId, song: "Not found" });
+	} finally {
+		client.close();
+	}
+};
+
+
+
 // I need a separate getUserByEmail bc even though userIds have to be consistent so that I can add them to notes, songs, constellations etc., emails can be changed upon user's request. At the same time, when checking a new user, email is the only thing consistent I have in advance, as it's more unique than name - but of course anyone can create new accounts with different emails, as it happens everywhere
 const getUserByEmail = async (req, res) => {
 	const client = new MongoClient(MONGO_URI, options);
@@ -393,9 +418,10 @@ const deleteSong = async (req, res) => {
 module.exports = {
 	// new handlers
 	saveSong,
+	getUserByEmail,
+	getSongInDbByApiId,
 	// old handlers
 	getUser,
-	getUserByEmail,
 	getSong,
 	getNote,
 	addUser,
