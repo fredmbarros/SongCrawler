@@ -1,54 +1,129 @@
-import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useState } from "react";
+import { useParams, Link } from "react-router-dom";
+import styled from "styled-components";
+import { BsVinylFill } from "react-icons/bs";
 
-const SongInfo = () => {
-	const { geniusId } = useParams();
-	let song = {};
+import SaveSong from "../components/SaveSong";
 
-	const fetchSong = async () => {
-		try {
-			const [geniusResponse, dbResponse] = await Promise.all([
-				fetch("https://genius.p.rapidapi.com/songs/" + geniusId, {
-					method: "GET",
-					headers: {
-						"x-rapidapi-host": "genius.p.rapidapi.com",
-						"x-rapidapi-key": process.env.REACT_APP_x_rapidapi_key,
-					},
-				}),
-				// from DB
-				// fetch("songs/songByApiId/" + geniusId),
-			]);
-			if (!geniusResponse.ok) {
-				const message = "From Genius: Error " + geniusResponse.status;
-				throw new Error(message);
-
-				// at least as long as the API results take precedence, better to just bypass any errors in the DB:
-				// } else if (!dbResponse.ok) {
-				// 	console.log("Nothing in DB");
-				// 	const message = "From DB: Error " + dbResponse.status;
-				// 	throw new Error(message);
-			} else {
-				const songFromGenius = await geniusResponse.json();
-				// const songFromDB = await dbResponse.json();
-				song.geniusInfo = songFromGenius.response.song;
-				// song.push(songFromDB);
-				console.log(song.geniusInfo);
-			}
-		} catch (error) {
-			return error;
-		}
-	};
-
-	useEffect(() => {
-		fetchSong();
-	}, []);
-
-	return (
-		<>
-			<p>Song info</p>
-		</>
-	);
+const SongInfo = ({ geniusInfo }) => {
+	if (Object.keys(geniusInfo).length === 0) {
+		return <p>Loading...</p>;
+	} else {
+		return (
+			<Wrapper>
+				<Position>
+					<Thumbnail src={geniusInfo.song_art_image_thumbnail_url}></Thumbnail>
+					<InfoAndSaveBtn>
+						<div>
+							<Title>{geniusInfo.title}</Title>
+							<Artist>{geniusInfo.artist_names}</Artist>
+							<Composer></Composer>
+						</div>
+						<SaveSongDiv>
+							<BsVinylFill />
+							<SaveSong
+							// songId={uuidv4()}
+							// songId={songId}
+							// songIdGenius={songIdGenius}
+							// songTitle={geniusInfo.title}
+							// artist={artist_names}
+							// songInUser={songInUser}
+							// setSongInUser={setSongInUser}
+							/>
+						</SaveSongDiv>
+					</InfoAndSaveBtn>
+				</Position>
+			</Wrapper>
+		);
+	}
 };
+
+const Wrapper = styled.div`
+	background-color: transparent;
+	// background-image: linear-gradient(var(--color-BgGradientStart), black);
+	color: white;
+	height: 100vh;
+`;
+const Position = styled.div`
+	display: flex;
+	width: 40vw;
+	align-items: center;
+	margin: 130px auto;
+	// border: solid 1px red;
+`;
+const InfoAndSaveBtn = styled.div`
+	display: flex;
+	flex-flow: column wrap;
+	margin-left: 32px;
+	height: 250px;
+	justify-content: space-around;
+`;
+const Thumbnail = styled.img`
+	filter: drop-shadow(0 12px 20px black);
+	// margin: 0 0 0 50px;
+	width: 250px;
+	height: 250px;
+	border-radius: 15px;
+`;
+const Title = styled.h2`
+	font-size: 30px;
+	font-weight: 100;
+	margin-bottom: 6px;
+`;
+const Artist = styled.h3``;
+const Composer = styled.h4``;
+const SaveSongDiv = styled.div`
+	// color: var(--color-functionalGreen);
+`;
+const Featured = styled.div`
+	display: flex;
+	align-items: baseline;
+`;
+const ThumbnailSmall = styled.img`
+	height: 50px;
+	width: auto;
+`;
+const Contribute = styled.p`
+	color: blue;
+	cursor: pointer;
+`;
+const ResultDiv = styled.div`
+	display: flex;
+	flex-direction: row;
+`;
+const Result = styled(Link)`
+	width: 100%;
+	display: flex;
+	justify-content: left;
+	border: none;
+	background-color: #68696e;
+	position: relative;
+	text-decoration: none;
+	color: white;
+	&:hover {
+		bottom: 1px;
+	}
+`;
+const NotesAndRelated = styled.div`
+	width: 50%;
+	border-left: solid 1px black;
+`;
+const NotesBox = styled.div`
+	margin: 16px;
+	border: solid lightgrey 1px;
+	border-radius: 5px;
+	background-color: #fffefa;
+	filter: drop-shadow(0 0 8px #1f2124);
+	min-height: 300px;
+	color: black;
+`;
+const RelatedSongs = styled.div`
+	margin: 20px 56px;
+	color: black;
+`;
+const P = styled.p`
+	margin: 20px;
+`;
 
 export default SongInfo;
 
@@ -65,3 +140,124 @@ export default SongInfo;
 // 					setSongInUser(songIdGenius);
 // 				}
 // 			});
+
+{
+	/* <Body>
+	<InfoWrapper>
+		<h2>Song info</h2>
+		<div>
+			<h4>Songwriter(s): </h4>
+			<div key={uuidv4()}>
+				{writer_artists.map((songwriter) => {
+					return (
+						<div key={uuidv4()}>
+							<p>{songwriter.name}</p>
+						</div>
+					);
+				})}
+			</div>
+		</div>
+
+		<p>Album:</p>
+		{song.album ? (
+			<>
+				<AlbumThumbnail
+					src={
+						song.album.cover_art_url ? (
+							song.album.cover_art_url
+						) : (
+							<p>Cover not available</p>
+						)
+					}></AlbumThumbnail>
+				<p>{song.album.name}</p>
+				<p>by {song.album.artist.name}</p>
+			</>
+		) : (
+			<span>Missing info {contribute}</span>
+		)}
+
+		<h4>Personnel:</h4>
+		{song.producer_artists.length > 0 ? (
+			song.producer_artists.map((producer) => {
+				return (
+					<div key={uuidv4()}>
+						<p>Producer: {producer.name}</p>
+					</div>
+				);
+			})
+		) : (
+			<span>Missing info {contribute}</span>
+		)}
+		{song.custom_performances.length > 0 ? (
+			song.custom_performances.map((performance) => {
+				return (
+					<div key={uuidv4()}>
+						{performance.artists.map((performer) => {
+							return (
+								<p key={uuidv4()}>
+									{performance.label + ": " + performer.name}
+								</p>
+							);
+						})}
+					</div>
+				);
+			})
+		) : (
+			<span>Missing info {contribute}</span>
+		)}
+		<ResultDiv>
+			<span>Recording location: </span>
+			{song.recording_location ? (
+				<span>{song.recording_location}</span>
+			) : (
+				<span>Missing info {contribute}</span>
+			)}
+		</ResultDiv>
+		<ResultDiv>
+			<h4>Release date: </h4>
+			{song.release_date_for_display ? (
+				<p>{song.release_date_for_display}</p>
+			) : (
+				<span>Missing info {contribute}</span>
+			)}
+		</ResultDiv>
+		<div>
+			<h4>Song relationships:</h4>
+			{song.song_relationships.length > 0 ? (
+				song.song_relationships.map((rel) => {
+					return (
+						<div key={uuidv4()}>
+							{rel.songs.length > 0 && (
+								<h4>
+									-{" "}
+									{rel.relationship_type
+										.trim()
+										.replace(/^\w/, (c) => c.toUpperCase())
+										.replace(/_/g, " ")}
+									:
+								</h4>
+							)}
+							{rel.songs.map((song) => {
+								return (
+									<Result to={song.api_path} key={uuidv4()}>
+										<p>{song.full_title}</p>
+									</Result>
+								);
+							})}
+						</div>
+					);
+				})
+			) : (
+				<span>Missing info {contribute}</span>
+			)}
+		</div>
+	</InfoWrapper>
+	<NotesAndRelated>
+		<H2>Notes</H2>
+		<NotesBox>
+			<P>Song Notes</P>
+			  map over songIdNotes
+		</NotesBox>
+	</NotesAndRelated>
+</Body>; */
+}

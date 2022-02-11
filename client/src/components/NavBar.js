@@ -76,6 +76,7 @@ const NavBar = () => {
 
 const Wrapper = styled.div`
 	background-color: transparent;
+	// background-color: blue;
 	display: flex;
 	padding: 20px 20px;
 	position: absolute;

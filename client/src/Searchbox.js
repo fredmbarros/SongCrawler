@@ -49,11 +49,16 @@ const Searchbox = () => {
 };
 
 const Form = styled.form`
-	margin: 4px #1f2124;
-	background-color: #1f2124;
+	margin: 4px;
+	border-top: solid 1px var(--color-greyedOutText);
+	border-left: solid 1px var(--color-greyedOutText);
+	border-bottom: solid 1px black;
+	border-right: solit 1px
+	background-color: var(--color-darkerBG);
+	filter: drop-shadow(0 12px 20px black);
 `;
 const BoxAndButton = styled.div`
-	width: 280px;
+	width: 355px;
 	display: flex;
 	align-items: center;
 	border-top: #1f2124 1px solid;
@@ -63,7 +68,7 @@ const InputBox = styled.input`
 	margin: 4px 4px 4px 7px;
 	border: solid black 2px;
 	border-radius: 5px;
-	width: 226px;
+	width: 300px;
 `;
 const SubmitBtn = styled.input`
 	margin: 0 4px 0 4px;

@@ -1,9 +1,9 @@
 import { useState, useContext, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { SearchContext } from "./SearchContext";
+import { SearchContext } from "../SearchContext";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
-import RenderResults from "./components/RenderResults";
+import RenderResults from "../components/RenderResults";
 
 const SearchResults = () => {
 	const {
@@ -49,52 +49,23 @@ const SearchResults = () => {
 
 	const searchDB = async () => {
 		// await
-	}
+	};
 
 	useEffect(() => {
 		searchGenius();
 	}, []);
 
 	return (
-		<>
-			<RenderResults resultsToRender={rawSearchResults}/>
-		</>
+		<Wrapper>
+			<RenderResults resultsToRender={rawSearchResults} />
+		</Wrapper>
 	);
 };
 
-const LI = styled.li`
+const Wrapper = styled.div`
 	display: flex;
-`;
-const Result = styled.div`
-	align-items: center;
-	width: 100%;
-	display: flex;
-	justify-content: left;
-	border: none;
-	background-color: white;
-	margin: 6px;
-	padding: 0 0 4px 0;
-	border-bottom: solid 1px darkgrey;
-	margin-right: 40px;
-	text-decoration: none; // ????
-`;
-const DIV = styled.div``;
-const IMG = styled.img`
-	width: 60px;
-	height: 60px;
-	border-radius: 5px;
-	filter: drop-shadow(0 0 4px #bababa);
-`;
-
-const TitleAndArtist = styled.p`
-	margin: 0 0 0 18px;
-	filter: drop-shadow(0 0 16px #bababa);
-	text-decoration: none; // ????
-	position: relative;
-
-	&:hover {
-		bottom: 1px;
-	}
+	justify-content: center;
+	margin: 90px 0;
 `;
 
 export default SearchResults;

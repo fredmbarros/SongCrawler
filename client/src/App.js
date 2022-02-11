@@ -2,11 +2,12 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import styled from "styled-components";
 import Header from "./components/Header";
-import SearchResults from "./SearchResults";
+import SearchResults from "./pages/SearchResults";
 import Start from "./pages/Start";
 import Weekly from "./pages/Weekly";
 import Game from "./pages/Game";
 import NavBar from "./components/NavBar";
+import FetchSong from "./components/FetchSong";
 import SongInfo from "./pages/SongInfo";
 import GlobalStyles from "./GlobalStyles";
 
@@ -25,7 +26,7 @@ const App = () => {
 						<Route exact path="/weekly" element={<Weekly />} />
 						<Route exact path="/game" element={<Game />} />
 						<Route path="/search/results" element={<SearchResults />} />
-						<Route path="/songs/:geniusId" element={<SongInfo />} />
+						<Route path="/songs/:geniusId" element={<FetchSong />} />
 					</Routes>
 				</Wrapper>
 			</Router>

@@ -23,6 +23,7 @@ export default createGlobalStyle`
       --color-functionalGreen: #238086;
       --color-darkerBG: #101018;
       --color-BgGradientStart: #181823;
+    //   --background-Gradient: 
 
     //   older variables (to be deleted as soon as the new styling is in place):
     --color-lightGray-background: #F4F4F4; 
@@ -42,6 +43,7 @@ export default createGlobalStyle`
     src: local("Homenaje"), url(${Homenaje}) format("woff2");
     font-weight: 300;
     font-style: normal;
+    font-size: 20px;
 }
 
     
