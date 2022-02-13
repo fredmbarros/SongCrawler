@@ -6,10 +6,13 @@ import SongInfo from "../pages/SongInfo";
 
 const FetchSong = () => {
 	const { geniusId } = useParams();
-	const [geniusInfo, setGeniusInfo] = useState({});
-	const [dbInfo, setDbInfo] = useState({});
+	const [songInfo, setSongInfo] = useState({ geniusInfo: {}, dbInfo: {} });
+	const [songInDb, setSongInDb] = useState();
 
 	const fetchingSong = async () => {
+		let songFromGenius = {};
+		let songFromDb = {};
+		let songId;
 		try {
 			const [geniusResponse, dbResponse] = await Promise.all([
 				fetch("https://genius.p.rapidapi.com/songs/" + geniusId, {
@@ -20,25 +23,24 @@ const FetchSong = () => {
 					},
 				}),
 				// from DB
-				// fetch("songs/songByApiId/" + geniusId),
+				fetch("/songs/songByApiId/" + geniusId),
 			]);
 			if (!geniusResponse.ok) {
 				const message = "From Genius: Error " + geniusResponse.status;
 				throw new Error(message);
-
-				// at least as long as the API results take precedence, better to just bypass any errors in the DB:
-				// } else if (!dbResponse.ok) {
-				// 	console.log("Nothing in DB");
-				// 	const message = "From DB: Error " + dbResponse.status;
-				// 	throw new Error(message);
-			} else {
-				// ADDING THE GENIUSINFO OBJECT TO THE STATE VARIABLE OBJECT SONG
-				const songFromGenius = await geniusResponse.json();
-				// const songFromDB = await dbResponse.json();
-				setGeniusInfo(songFromGenius.response.song);
-				// setDbInfo(songFromDB);
-				console.log(geniusInfo);
 			}
+			if (dbResponse.ok) {
+				songFromDb = await dbResponse.json();
+				// defining if user saved the song: getUser made elsewhere (perhaps on login and saved in sessionStorage) is acessed to check if songId (not geniusId) can be found. If true, setSongInDb true
+				const userSavedSong = await fetch("/users/user/" + songFromDb.songId);
+				userSavedSong ? setSongInDb(true) : setSongInDb(false);
+			}
+			// adding info from Genius and, if present, from DB to the object songInfo
+			songFromGenius = await geniusResponse.json();
+			setSongInfo({
+				geniusInfo: songFromGenius.response.song,
+				dbInfo: songFromDb,
+			});
 		} catch (error) {
 			return error;
 		}
@@ -48,7 +50,7 @@ const FetchSong = () => {
 		fetchingSong();
 	}, []);
 
-	return <SongInfo geniusInfo={geniusInfo} />;
+	return <SongInfo songInfo={songInfo} songInDb={songInDb} />;
 };
 
 export default FetchSong;

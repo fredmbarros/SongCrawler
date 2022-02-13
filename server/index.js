@@ -10,9 +10,8 @@ const {
 	saveSong,
 	getUserByEmail,
 	getSongInDbByApiId,
-	// old
 	getUser,
-	getSong,
+	// old
 	getNote,
 	addUser,
 	addSongToUser,
@@ -35,11 +34,10 @@ express()
 	// new
 	.post("/songs", saveSong)
 	.get("/users/email/:email", getUserByEmail)
-	.get("songs/songByApiId/:geniusId", getSongInDbByApiId)
+	.get("/songs/songInDbByApiId/:geniusId", getSongInDbByApiId)
+	.get("/users/:userId", getUser)
 	// .get("/songs/:songId", getSongInDb)
 	// old
-	.get("/users/:userId", getUser)
-	.get("/users/songs/", getSong)
 	.get("/notes/:noteId", getNote)
 	.post("/users/", addUser)
 	.post("/notes", addNote)

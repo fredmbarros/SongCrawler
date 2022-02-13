@@ -87,23 +87,30 @@ const getSongInDbByApiId = async (req, res) => {
 	const db = client.db("songcrawler");
 	const songs = db.collection("songs");
 	const { geniusId } = req.params;
-	console.log(geniusId);
 	try {
-		songByApiId = await songs.findOne({ geniusId });
-		console.log(songByApiId);
-		if (!songByApiId) {
-			songByNameAndTitle = await songs.findOne({ })
-		}
-		res.status(200).json({ status: 200, songId, song });
+		const song = await songs.findOne({ songIdGenius: geniusId });
+		res.status(200).json({ status: 200, geniusId, song });
 	} catch (err) {
 		console.log(err);
-		res.status(404).json({ status: 404, songId, song: "Not found" });
+		res.status(404).json({ status: 404, geniusId, song: "Not found" });
 	} finally {
 		client.close();
 	}
 };
-
-
+const getUser = async (req, res) => {
+	const client = new MongoClient(MONGO_URI, options);
+	await client.connect();
+	const db = client.db("songcrawler");
+	const { userId } = req.params;
+	try {
+		const userInDb = await db.collection("users").findOne({ userId });
+		res.status(200).json({ status: 200, userId, userInDb });
+	} catch (err) {
+		res.status(404).json({ status: 404, userId, userInDb: "Error" });
+	} finally {
+		client.close();
+	}
+};
 
 // I need a separate getUserByEmail bc even though userIds have to be consistent so that I can add them to notes, songs, constellations etc., emails can be changed upon user's request. At the same time, when checking a new user, email is the only thing consistent I have in advance, as it's more unique than name - but of course anyone can create new accounts with different emails, as it happens everywhere
 const getUserByEmail = async (req, res) => {
@@ -139,7 +146,7 @@ const getSongInDb = async (req, res) => {
 		songBySongId = await songs.findOne({ songId });
 		console.log(songBySongId);
 		if (!songBySongId) {
-			songByNameAndTitle = await songs.findOne({ })
+			songByNameAndTitle = await songs.findOne({});
 		}
 		res.status(200).json({ status: 200, songId, song });
 	} catch (err) {
@@ -171,44 +178,6 @@ const addNote = async (req, res) => {
 };
 
 // old handlers
-const getUser = async (req, res) => {
-	const client = new MongoClient(MONGO_URI, options);
-	await client.connect();
-	const db = client.db("songcrawler");
-	const { userId } = req.params;
-	console.log("req.params:");
-	console.log(req.params);
-	// let userInDb = {};
-	try {
-		const userInDb = await db.collection("users").findOne({ userId });
-		console.log("userInDb:");
-		console.log(userInDb);
-		res.status(200).json({ status: 200, userInDb });
-	} catch (err) {
-		res.status(404).json({ status: 404, userInDb: "Error" });
-	} finally {
-		client.close();
-	}
-};
-
-const getSong = async (req, res) => {
-	const client = new MongoClient(MONGO_URI, options);
-	await client.connect();
-	const db = client.db("songcrawler");
-	const { songId } = req.params;
-	console.log(songId);
-	let song = {};
-	try {
-		song = await db.collection("songs").findOne({ songId });
-		console.log(song);
-		res.status(200).json({ status: 200, songId, song });
-	} catch (err) {
-		console.log(err);
-		res.status(404).json({ status: 404, songId, song: "Not found" });
-	} finally {
-		client.close();
-	}
-};
 
 const getNote = async (req, res) => {
 	const client = new MongoClient(MONGO_URI, options);
@@ -288,7 +257,6 @@ const addSongToUser = async (req, res) => {
 	}
 	client.close();
 };
-
 
 const updateUser = async (req, res) => {
 	const client = new MongoClient(MONGO_URI, options);
@@ -420,9 +388,8 @@ module.exports = {
 	saveSong,
 	getUserByEmail,
 	getSongInDbByApiId,
-	// old handlers
 	getUser,
-	getSong,
+	// old handlers
 	getNote,
 	addUser,
 	addSongToUser,

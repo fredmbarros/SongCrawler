@@ -1,27 +1,26 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import styled from "styled-components";
-import { BsVinylFill } from "react-icons/bs";
 
 import SaveSong from "../components/SaveSong";
 
-const SongInfo = ({ geniusInfo }) => {
-	if (Object.keys(geniusInfo).length === 0) {
+const SongInfo = ({ songInfo, songInDb }) => {
+	if (Object.keys(songInfo.geniusInfo).length === 0) {
 		return <p>Loading...</p>;
 	} else {
 		return (
 			<Wrapper>
 				<Position>
-					<Thumbnail src={geniusInfo.song_art_image_thumbnail_url}></Thumbnail>
+					<Thumbnail
+						src={songInfo.geniusInfo.song_art_image_thumbnail_url}></Thumbnail>
 					<InfoAndSaveBtn>
 						<div>
-							<Title>{geniusInfo.title}</Title>
-							<Artist>{geniusInfo.artist_names}</Artist>
+							<Title>{songInfo.geniusInfo.title}</Title>
+							<Artist>{songInfo.geniusInfo.artist_names}</Artist>
 							<Composer></Composer>
 						</div>
-						<SaveSongDiv>
-							<BsVinylFill />
-							<SaveSong
+						<SaveSong
+							songInDb={songInDb}
 							// songId={uuidv4()}
 							// songId={songId}
 							// songIdGenius={songIdGenius}
@@ -29,8 +28,7 @@ const SongInfo = ({ geniusInfo }) => {
 							// artist={artist_names}
 							// songInUser={songInUser}
 							// setSongInUser={setSongInUser}
-							/>
-						</SaveSongDiv>
+						/>
 					</InfoAndSaveBtn>
 				</Position>
 			</Wrapper>
@@ -72,9 +70,6 @@ const Title = styled.h2`
 `;
 const Artist = styled.h3``;
 const Composer = styled.h4``;
-const SaveSongDiv = styled.div`
-	// color: var(--color-functionalGreen);
-`;
 const Featured = styled.div`
 	display: flex;
 	align-items: baseline;
@@ -126,20 +121,6 @@ const P = styled.p`
 `;
 
 export default SongInfo;
-
-// await fetch(`/users/${userId}`)
-// 			.then((res) => res.json())
-// 			.then((data) => {
-// 				console.log("data:");
-// 				console.log(data);
-// 				if (
-// 					data.userInDb.songs.find((song) => {
-// 						return song === songId;
-// 					})
-// 				) {
-// 					setSongInUser(songIdGenius);
-// 				}
-// 			});
 
 {
 	/* <Body>

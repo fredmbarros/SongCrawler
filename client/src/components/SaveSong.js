@@ -2,18 +2,23 @@ import { useState, useParams, useContext } from "react";
 import { SearchContext } from "../SearchContext";
 import { useAuth0 } from "@auth0/auth0-react";
 import styled from "styled-components";
+import { BsVinylFill } from "react-icons/bs";
 
-const SaveSong = (
-	{
-		// songId,
-		// songIdGenius,
-		// songTitle,
-		// artist,
-		// songInUser,
-		// setSongInUser,
-	}
-) => {
-	return <p>SaveSong</p>;
+const SaveSong = ({
+	songInDb,
+	// songId,
+	// songIdGenius,
+	// songTitle,
+	// artist,
+	// songInUser,
+	// setSongInUser,
+}) => {
+	return (
+		<Wrapper>
+			<Icon />
+			{songInDb ? <Button>Save Song</Button> : <Button>Remove Song</Button>}
+		</Wrapper>
+	);
 	// 	const { userId, username } = useContext(SearchContext);
 	// 	const { user, isAuthenticated, isLoading } = useAuth0();
 
@@ -127,9 +132,18 @@ const SaveSong = (
 	// 	);
 };
 
-const P = styled.p`
-	color: green;
+const Wrapper = styled.div`
+	display: flex;
 `;
+const Button = styled.button`
+	color: var(--color-functionalGreen);
+	background-color: transparent;
+	margin-left: 8px;
+`;
+const Icon = styled(BsVinylFill)`
+	color: var(--color-functionalGreen);
+`;
+
 // const Wrapper = styled.div`
 // 	display: block;
 // 	position: relative;
