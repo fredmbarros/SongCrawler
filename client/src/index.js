@@ -4,6 +4,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { SearchProvider } from "./SearchContext";
 import { Auth0Provider } from "@auth0/auth0-react";
+import { AppProvider } from "./AppContext";
 
 ReactDOM.render(
 	<Auth0Provider
@@ -11,9 +12,11 @@ ReactDOM.render(
 		clientId="nfdpTV8old0asFEC6HyuDjpzomfNHaOn"
 		cacheLocation="localstorage"
 		redirectUri={window.location.origin}>
-		<SearchProvider>
-			<App />
-		</SearchProvider>
+		<AppProvider>
+			<SearchProvider>
+				<App />
+			</SearchProvider>
+		</AppProvider>
 	</Auth0Provider>,
 	document.getElementById("root")
 );

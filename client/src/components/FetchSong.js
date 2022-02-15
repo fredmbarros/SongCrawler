@@ -15,6 +15,7 @@ const FetchSong = () => {
 		let songId;
 		try {
 			const [geniusResponse, dbResponse] = await Promise.all([
+				// from API
 				fetch("https://genius.p.rapidapi.com/songs/" + geniusId, {
 					method: "GET",
 					headers: {
@@ -23,17 +24,29 @@ const FetchSong = () => {
 					},
 				}),
 				// from DB
-				fetch("/songs/songByApiId/" + geniusId),
+				fetch("/songs/songInDbByApiId/" + geniusId),
 			]);
 			if (!geniusResponse.ok) {
 				const message = "From Genius: Error " + geniusResponse.status;
 				throw new Error(message);
 			}
 			if (dbResponse.ok) {
-				songFromDb = await dbResponse.json();
+				let response = await dbResponse.json();
+				songFromDb = response.song;
+				console.log(songFromDb);
 				// defining if user saved the song: getUser made elsewhere (perhaps on login and saved in sessionStorage) is acessed to check if songId (not geniusId) can be found. If true, setSongInDb true
-				const userSavedSong = await fetch("/users/user/" + songFromDb.songId);
-				userSavedSong ? setSongInDb(true) : setSongInDb(false);
+				let userSavedSong;
+				let savedSongsArr = [];
+				savedSongsArr.push(window.localStorage.getItem("savedSongs"));
+				console.log(savedSongsArr);
+				savedSongsArr.map((item) => {
+					if (songFromDb.songId === item) {
+						return true;
+					}
+				});
+				if (userSavedSong) console.log("true");
+
+				// userSavedSong ? setSongInDb(true) : setSongInDb(false);
 			}
 			// adding info from Genius and, if present, from DB to the object songInfo
 			songFromGenius = await geniusResponse.json();

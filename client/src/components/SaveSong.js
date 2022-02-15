@@ -3,6 +3,7 @@ import { SearchContext } from "../SearchContext";
 import { useAuth0 } from "@auth0/auth0-react";
 import styled from "styled-components";
 import { BsVinylFill } from "react-icons/bs";
+import { saveSong } from "../../../server/handlers";
 
 const SaveSong = ({
 	songInDb,
@@ -13,10 +14,29 @@ const SaveSong = ({
 	// songInUser,
 	// setSongInUser,
 }) => {
+	const { user, isAuthenticated, isLoading } = useAuth0();
+	const addSong = () => {
+		if (isAuthenticated) {
+			if (!songInDb) {
+				// fetch pra adicionar a canção à coleção songs na DB
+			}
+			// por fim, fetch para adicionar a canção ao usuário
+		}
+	};
+
+	const removeSong = () => {
+		if (isAuthenticated && songInDb) {
+			// fetch pra remover a canção a canção ao usuário
+		}
+	};
 	return (
 		<Wrapper>
 			<Icon />
-			{songInDb ? <Button>Save Song</Button> : <Button>Remove Song</Button>}
+			{songInDb ? (
+				<Button onClick={() => addSong()}>Save Song</Button>
+			) : (
+				<Button onClick={() => removeSong()}>Remove Song</Button>
+			)}
 		</Wrapper>
 	);
 	// 	const { userId, username } = useContext(SearchContext);

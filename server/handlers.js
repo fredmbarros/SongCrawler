@@ -13,6 +13,38 @@ const options = {
 };
 
 // new handlers
+const addUser = async (req, res) => {
+	const client = new MongoClient(MONGO_URI, options);
+	await client.connect();
+	const db = client.db("songcrawler");
+	if (!req.body.email) {
+		return res.status(400).json({ status: 400, data: "Email required" });
+	}
+	try {
+		const user = {
+			userId: req.body.userId,
+			username: req.body.username,
+			email: req.body.email,
+			avatar: req.body.avatar,
+			songs: [],
+			notes: [],
+		};
+		const checkUser = await db
+			.collection("users")
+			.findOne({ email: user.email });
+		if (checkUser) {
+			return res.status(400).json({ status: 400, data: "User already exists" });
+		}
+		const addingUser = await db.collection("users").insertOne(user);
+		if (addingUser) {
+			res.status(201).json({ status: 201, data: req.body });
+		}
+	} catch (err) {
+		res.status(500).json({ status: 500, data: req.body, message: err.message });
+	}
+	client.close();
+};
+
 const saveSong = async (req, res) => {
 	// saveSong, 1, adds the song to the DB + adds user to song^* OR adds user to existing song in DB; 2, adds song to user
 	//* Songs have an array listing the users that saved them. I have no use for it now, but it may come in handy down the road.
@@ -120,14 +152,11 @@ const getUserByEmail = async (req, res) => {
 	const { email } = req.params;
 	console.log("req.params:");
 	console.log(req.params);
-	// let userInDb = {};
 	try {
 		const userInDb = await db.collection("users").findOne({ email });
-		console.log("userInDb:");
-		console.log(userInDb);
-		res.status(200).json({ status: 200, userInDb });
+		res.status(200).json({ status: 200, email, userInDb });
 	} catch (err) {
-		res.status(404).json({ status: 404, userInDb: "Error" });
+		res.status(404).json({ status: 404, email, userInDb: "Error" });
 	} finally {
 		client.close();
 	}
@@ -197,35 +226,6 @@ const getNote = async (req, res) => {
 	}
 };
 // updated
-const addUser = async (req, res) => {
-	const client = new MongoClient(MONGO_URI, options);
-	await client.connect();
-	const db = client.db("songcrawler");
-	if (!req.body.email) {
-		return res.status(400).json({ status: 400, data: "Email required" });
-	}
-	try {
-		const user = {
-			userId: req.body.userId,
-			username: req.body.username,
-			email: req.body.email,
-			avatar: req.body.avatar,
-			songs: [],
-			notes: [],
-		};
-		const checkUser = await db
-			.collection("users")
-			.findOne({ email: user.email });
-		if (checkUser) {
-			return res.status(400).json({ status: 400, data: "User already exists" });
-		}
-		const addingUser = await db.collection("users").insertOne(user);
-		res.status(201).json({ status: 201, data: req.body });
-	} catch (err) {
-		res.status(500).json({ status: 500, data: req.body, message: err.message });
-	}
-	client.close();
-};
 
 const addSongToUser = async (req, res) => {
 	const client = new MongoClient(MONGO_URI, options);
