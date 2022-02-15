@@ -3,7 +3,6 @@ import { SearchContext } from "../SearchContext";
 import { useAuth0 } from "@auth0/auth0-react";
 import styled from "styled-components";
 import { BsVinylFill } from "react-icons/bs";
-import { saveSong } from "../../../server/handlers";
 
 const SaveSong = ({
 	songInDb,
