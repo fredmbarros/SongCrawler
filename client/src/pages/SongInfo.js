@@ -4,30 +4,58 @@ import styled from "styled-components";
 
 import SaveSong from "../components/SaveSong";
 
-const SongInfo = ({ songInfo, songInDb }) => {
-	if (Object.keys(songInfo.geniusInfo).length === 0) {
+const SongInfo = ({
+	geniusData,
+	song,
+	songInDb,
+	songInUser,
+	setSongInUser,
+}) => {
+	// // consolidating data from the DB and from Genius so that it can be handled elsewhere
+
+	// data that will come from Genius regardless of song being in the DB:
+	// Object.assign(consolidatedData, {songImage: geniusData.song_art_image_url, composer: writer_artists, recordingLocation: recording_location});
+
+	// writer artists[array]
+	// recording_location: null
+	// release_date_for_display: "2014"
+	// custom_performances[array].label / .artists[array]
+	// album.api_path
+	// album.artist.name / .artist.api_path / .artist.name / .name / .cover_art_url
+	// geniusData.song_relationships[array]
+	// producer_artists[array].name
+	// producer_artists[array].url
+	// appleMusic: {apple_music_id: "916004619"
+	// apple_music_player_url: "https://genius.com/songs/2225691/apple_music_player"},
+
+	// if (artist.name) {
+	// 	if (artist.substring(0, 3).toLowerCase() === "the") {
+	// 		artistName = artist.slice(4, artist.length);
+	// 		the = "The ";
+	// 	} else {
+	// 		artistName = artist;
+	// 		the = "";
+	// 	}
+	// }
+	// };
+
+	if (!song || !geniusData) {
 		return <p>Loading...</p>;
 	} else {
 		return (
 			<Wrapper>
 				<Position>
-					<Thumbnail
-						src={songInfo.geniusInfo.song_art_image_thumbnail_url}></Thumbnail>
+					<Thumbnail src={geniusData.song_art_image_url}></Thumbnail>
 					<InfoAndSaveBtn>
 						<div>
-							<Title>{songInfo.geniusInfo.title}</Title>
-							<Artist>{songInfo.geniusInfo.artist_names}</Artist>
-							<Composer></Composer>
+							<Title>{song.song.title}</Title>
+							<Artist>{song.artist.completeName}</Artist>
 						</div>
 						<SaveSong
 							songInDb={songInDb}
-							// songId={uuidv4()}
-							// songId={songId}
-							// songIdGenius={songIdGenius}
-							// songTitle={geniusInfo.title}
-							// artist={artist_names}
-							// songInUser={songInUser}
-							// setSongInUser={setSongInUser}
+							song={song}
+							songInUser={songInUser}
+							setSongInUser={setSongInUser}
 						/>
 					</InfoAndSaveBtn>
 				</Position>
@@ -69,7 +97,6 @@ const Title = styled.h2`
 	margin-bottom: 6px;
 `;
 const Artist = styled.h3``;
-const Composer = styled.h4``;
 const Featured = styled.div`
 	display: flex;
 	align-items: baseline;

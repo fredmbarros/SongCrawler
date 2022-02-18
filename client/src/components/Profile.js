@@ -24,7 +24,7 @@ const Profile = () => {
 			const response = await checkEmail.json();
 			const { userInDb } = response;
 			if (userInDb) {
-				console.log("from db");
+				console.log("user in db");
 				userId = userInDb.userId;
 				username = userInDb.username;
 				email = userInDb.email;
