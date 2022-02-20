@@ -50,12 +50,14 @@ const Searchbox = () => {
 
 const Form = styled.form`
 	margin: 4px;
+	border-radius: 10px;
 	border-top: solid 1px var(--color-greyedOutText);
-	border-left: solid 1px var(--color-greyedOutText);
+	border-left: solid 0.5px var(--color-greyedOutText);
 	border-bottom: solid 1px black;
-	border-right: solit 1px
+	border-right: solid 1px black;
 	background-color: var(--color-darkerBG);
 	filter: drop-shadow(0 12px 20px black);
+	padding: 2px;
 `;
 const BoxAndButton = styled.div`
 	width: 355px;
@@ -76,14 +78,22 @@ const SubmitBtn = styled.input`
 	width: 33px;
 	border-radius: 50px;
 	position: relative;
+	color: black;
+	background-color: lightgrey;
+	// border: 1px grey solid;
+	border-top: 2px white solid;
+	border-left: 1px white solid;
 
 	&:hover {
 		cursor: pointer;
 	}
 	&:active {
 		filter: drop-shadow(0 0 -6px #1f2124);
-		height: 31px;
-		width: 31px;
+		border-top: 2px grey solid;
+		border-left: 1px grey solid;
+
+		// height: 31px;
+		// width: 31px;
 	}
 `;
 export default Searchbox;
