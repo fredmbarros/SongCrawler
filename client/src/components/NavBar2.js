@@ -4,19 +4,20 @@ import styled from "styled-components";
 // NavBar2 looks like NavBar, but its mechanics are different, as it has nothing to do with params and the URL. There's a NavBarAdaptive file that I started coding in case down the line I decide to have just one single NavBar component that is valid for all situations and renders the routes accordingly
 
 const NavBar2 = ({ setRoute }) => {
-	const [isActive, setIsActive] = useState();
+	const [toggleActive, setToggleActive] = useState();
 	const handleClick = (currentRoute) => {
 		setRoute(currentRoute);
+		setToggleActive(!toggleActive);
 	};
 	return (
 		<Wrapper>
 			<Button
-				className={isActive ? "Wrapper" : null}
+				className={toggleActive ? "current" : ""}
 				onClick={() => handleClick("song_constellation")}>
 				Constellation
 			</Button>
 			<Button
-				className={isActive ? "Wrapper" : null}
+				className={toggleActive ? "" : "current"}
 				onClick={() => handleClick("song_details")}>
 				Song Details
 			</Button>
@@ -32,25 +33,22 @@ const Wrapper = styled.div`
 	width: auto;
 	margin: auto;
 	gap: 20px;
-	font-size: 18px;
+	font-size: 16px;
 	Button {
 		text-decoration: none;
 		color: var(--color-greyedOutText);
 		transition: font-size 0.4s;
-		&:active {
+		&.current {
 			color: var(--color-regularText);
-			font-size: 30px;
+			font-size: 24px;
 			transition: font-size 0.4s;
 		}
 	}
 `;
 const Button = styled.button`
 	text-decoration: none;
-	font-size: 14px;
-	// margin: 22px 12px 0 0;
 	border: none;
 	background-color: transparent;
-	// color: var(--color-functionalGreen);
 	cursor: pointer;
 `;
 
