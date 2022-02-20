@@ -10,7 +10,7 @@ const SongInfoBoard = ({ song, geniusData }) => {
 
 	return (
 		<Wrapper>
-			<NavBar2 setRoute={setRoute} />
+			<NavBar2S setRoute={setRoute} />
 			{route === "song_constellation" ? (
 				<SongConstellation song={song} />
 			) : (
@@ -20,8 +20,18 @@ const SongInfoBoard = ({ song, geniusData }) => {
 	);
 };
 
-const Wrapper = styled.div`
-	position: relative;
+const NavBar2S = styled(NavBar2)`
+	position: absolute;
+	width: auto;
+	margin: auto;
+	border: green solid 1px;
 `;
 
+const Wrapper = styled.div`
+	position: relative;
+	// border: blue solid 1px;
+	> NavBar2S {
+		border: green solid 1px;
+	}
+`;
 export default SongInfoBoard;

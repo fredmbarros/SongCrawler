@@ -28,19 +28,19 @@ const NavBar2 = ({ setRoute }) => {
 const Wrapper = styled.div`
 	background-color: transparent;
 	display: flex;
-	padding: 20px 20px;
-	position: absolute;
-	width: auto;
-	margin: auto;
+	align-items: flex-start;
+	padding: 0px 20px;
+	position: relative;
 	gap: 20px;
 	font-size: 16px;
+	// border: solid red 1px;
 	Button {
 		text-decoration: none;
 		color: var(--color-greyedOutText);
 		transition: font-size 0.4s;
 		&.current {
 			color: var(--color-regularText);
-			font-size: 24px;
+			font-size: 22px;
 			transition: font-size 0.4s;
 		}
 	}
