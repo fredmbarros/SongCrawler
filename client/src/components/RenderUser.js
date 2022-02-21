@@ -16,7 +16,7 @@ const RenderUser = ({ avatar, isLoading, user, username }) => {
 		}
 	} else {
 		if (!username) {
-			return <div>Loading USERNAME...</div>;
+			return <div>Loading...</div>;
 		} else {
 			return (
 				<Wrapper>

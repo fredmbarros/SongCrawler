@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { v4 as uuidv4 } from "uuid";
 
 import GlobalStyles from "../GlobalStyles";
 
@@ -10,7 +9,7 @@ const RenderResults = ({ resultsToRender }) => {
 			<UL>
 				{resultsToRender.map((item, index) => {
 					return (
-						<LI key={uuidv4()}>
+						<LI key={index}>
 							<Result as={Link} to={item.result.api_path}>
 								<IMG src={item.result.header_image_thumbnail_url} />
 								<TitleAndArtist>{item.result.full_title}</TitleAndArtist>
