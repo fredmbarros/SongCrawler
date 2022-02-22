@@ -5,7 +5,7 @@ const SongDetails = ({ data }) => {
 	console.log(data.writer_artists[0].name);
 	return (
 		<Wrapper>
-			<div>
+			<Columns>
 				{data.writer_artists.length ? (
 					<div>
 						{data.writer_artists.length > 1 ? (
@@ -29,22 +29,22 @@ const SongDetails = ({ data }) => {
 					<IMG src={data.album.cover_art_url} />
 					<TitleAndArtist>{data.album.full_title}</TitleAndArtist>
 				</Result>
-				<H5>Recording location: </H5>
+				<H5>Recording location:</H5>
 				{data.recording_location ? (
 					<p>{data.recording_location}</p>
 				) : (
 					<H6>No info</H6>
 				)}
-				<H5>Release date: </H5>
+				<H5>Release date:</H5>
 				{data.release_date_for_display ? (
 					<p>{data.release_date_for_display}</p>
 				) : (
 					<H6>No info</H6>
 				)}
-			</div>
-			<div>
+			</Columns>
+			<Columns>
 				<div>
-					<H5>Personnel: </H5>
+					<H5>Credits:</H5>
 					{data.custom_performances.map((item, index) => {
 						return (
 							<div key={index}>
@@ -58,30 +58,58 @@ const SongDetails = ({ data }) => {
 						);
 					})}
 				</div>
-			</div>
-			<div>
-				{data.song_relationships[0].songs.length > 0 ? (
-					<div>
-						{data.song_relationships.map((item, index) => {
-							item.songs.length > 0 ? (
-								<div>
-									<H6 key={index}>{item.relationship_type}</H6>;
-									{item.songs.map((song, index) => {
-										return <H5 key={index}>{song.full_title}</H5>;
-									})}
-								</div>
-							) : (
-								<div>No info</div>
-							);
-						})}
-					</div>
-				) : (
-					<div>
-						<H5>Song relationships:</H5>
-						<H6>No info</H6>
-					</div>
-				)}
-			</div>
+			</Columns>
+			<Columns>
+				{/* <div>
+					<H5>Song relationships:</H5>
+					<H6>No info</H6>
+				</div>
+				<div>
+					{data.song_relationships.map((item, index) => {
+						<p key={index}>item.relationship_type</p>;
+						console.log(data.song_relationships);
+						item.songs.length > 0 ? (
+						<div>
+							{item.songs.map((song, index) => {
+								<H5 key={index}>{song.full_title}</H5>;
+							})}
+						</div>
+						) : (
+						<div>No info</div>
+						)
+					})}
+				</div> */}
+				<div>
+					{data.song_relationships.map((item, index) => {
+						return (
+							<>
+								{item.songs.length > 0 && (
+									<div>
+										{item.relationship_type !== "remixed_by" ? (
+											<H5 key={index}>
+												{item.relationship_type
+													.trim()
+													.replace(/^\w/, (c) => c.toUpperCase())
+													.replace(/_/g, " ")}
+												:
+											</H5>
+										) : (
+											<H5>Remixes</H5>
+										)}
+										{item.songs.map((song, index) => {
+											return item.relationship_type !== "covered_by" ? (
+												<p key={index}>{song.full_title}</p>
+											) : (
+												<p key={index}>{song.artist_names}</p>
+											);
+										})}
+									</div>
+								)}
+							</>
+						);
+					})}
+				</div>
+			</Columns>
 		</Wrapper>
 	);
 };
@@ -107,12 +135,21 @@ const SongDetails = ({ data }) => {
 }
 
 const Wrapper = styled.div`
+	margin: 20px 0 0 0;
 	display: flex;
+	justify-content: center;
+	background-size: cover:
+	background-image: linear-gradient(var(--color-BgGradientStart), black);
 `;
 
+const Columns = styled.div`
+	width: 160px;
+	margin: 10px;
+`;
 const H5 = styled.h5`
 	margin: 8px 0 1px 0;
 	color: var(--color-greyedOutText);
+	font-size: 1.2rem;
 `;
 const H6 = styled.p`
 	margin: 4px 0 1px 0;

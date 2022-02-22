@@ -29,7 +29,7 @@ const NavBar2S = styled(NavBar2)`
 
 const Wrapper = styled.div`
 	position: relative;
-	// border: blue solid 1px;
+	padding: 10px 0 0 0;
 	> NavBar2S {
 		border: green solid 1px;
 	}

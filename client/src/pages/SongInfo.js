@@ -12,7 +12,6 @@ const SongInfo = ({
 	songInUser,
 	setSongInUser,
 }) => {
-
 	// if (artist.name) {
 	// 	if (artist.substring(0, 3).toLowerCase() === "the") {
 	// 		artistName = artist.slice(4, artist.length);
@@ -36,25 +35,28 @@ const SongInfo = ({
 							<Title>{song.song.title}</Title>
 							<Artist>{song.artist.completeName}</Artist>
 						</div>
-						<SaveSong
-							songInDb={songInDb}
-							song={song}
-							songInUser={songInUser}
-							setSongInUser={setSongInUser}
-						/>
+						<div>
+							<SaveSong
+								songInDb={songInDb}
+								song={song}
+								songInUser={songInUser}
+								setSongInUser={setSongInUser}
+							/>
+							{/* {geniusData.apple_music_id} */}
+						</div>
 					</InfoAndSaveBtn>
 				</Position>
-				<SongInfoBoard geniusData={geniusData} song={song}/>
+				<SongInfoBoard geniusData={geniusData} song={song} />
 			</Wrapper>
 		);
 	}
 };
 
 const Wrapper = styled.div`
-	background-color: transparent;
+	// background-color: transparent;
 	// background-image: linear-gradient(var(--color-BgGradientStart), black);
 	color: white;
-	height: 100vh;
+	// height: 100vh;
 `;
 const Position = styled.div`
 	display: flex;
