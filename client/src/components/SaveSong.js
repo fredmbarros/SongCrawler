@@ -6,23 +6,56 @@ import { BsVinylFill } from "react-icons/bs";
 
 const SaveSong = ({
 	songInDb,
-	// songId,
-	// songIdGenius,
-	// songTitle,
-	// artist,
+	songId,
+	songIdGenius,
+	songTitle,
+	artist,
 	songInUser,
-	// setSongInUser,
+	setSongInUser,
 }) => {
 	const { user, isAuthenticated, isLoading } = useAuth0();
 
 	const addSong = () => {
-		console.log("add song");
-		if (isAuthenticated && !songInUser) {
-			if (!songInDb) {
-				// fetch pra adicionar a canção à coleção songs na DB
-			}
-			// por fim, fetch para adicionar a canção ao usuário
-		}
+		// ALL THE INFO NEEDED GOES IN ONE CALL, SO IT'S BETTER TO DO IT ALL (CHECK AND ADD TO USER AND ADD TO DB) IN THE BE
+		// console.log("add song");
+		// const addSongToDb = async () => {
+		// 	const settings = {
+		// 		method: "POST",
+		// 		headers: {
+		// 			Accept: "application/json",
+		// 			"Content-Type": "application/json",
+		// 		},
+		// 		body: {
+		// 			songId, songIdGenius, songTitle, artist
+		// 		}
+		// 	}
+		// 	try {
+		// 		const fetchResponse = await fetch("/songs", settings);
+		// 		const addedToDb = await fetchResponse.json();
+		// 		return addedToDb;
+		// 	} catch (err) {
+		// 		return err;
+		// 	}
+		// }
+		// const addSongToUserInDb = async () => {
+		// 	const settings = {
+		// 		method: "POST",
+		// 		headers: {
+		// 			Accept: "application/json",
+		// 			"Content-Type": "application/json",
+		// 		},
+		// 		body: {
+		// 			songId
+		// 		}
+		// 	}
+		// }
+		// if (isAuthenticated && !songInUser) {
+		// 	if (!songInDb) {
+		// 		addSongToDb();
+		// 	}
+		// 	}
+		// 	// por fim, fetch para adicionar a canção ao usuário
+		// }
 	};
 
 	const removeSong = () => {

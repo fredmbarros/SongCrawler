@@ -140,6 +140,7 @@ const Wrapper = styled.div`
 	justify-content: center;
 	background-size: cover:
 	background-image: linear-gradient(var(--color-BgGradientStart), black);
+	padding: 0 0 50px 0;
 `;
 
 const Columns = styled.div`

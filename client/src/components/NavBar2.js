@@ -29,11 +29,11 @@ const Wrapper = styled.div`
 	background-color: transparent;
 	display: flex;
 	align-items: flex-start;
-	padding: 0px 20px;
+	justify-content: center;
+	padding: 0px 50px 0px 20px;
 	position: relative;
 	gap: 20px;
 	font-size: 16px;
-	// border: solid red 1px;
 	Button {
 		text-decoration: none;
 		color: var(--color-greyedOutText);
