@@ -54,15 +54,16 @@ const SongInfo = ({
 
 const Wrapper = styled.div`
 	// background-color: transparent;
-	// background-image: linear-gradient(var(--color-BgGradientStart), black);
+	background-image: linear-gradient(var(--color-BgGradientStart), black);
 	color: white;
-	// height: 100vh;
 `;
 const Position = styled.div`
 	display: flex;
-	width: 40vw;
+	width: 34vw;
 	align-items: center;
-	margin: 130px auto;
+	margin: auto;
+	padding: 120px 0 80px 20px;
+	// border: solid blue 3px;
 `;
 const InfoAndSaveBtn = styled.div`
 	display: flex;
@@ -70,6 +71,7 @@ const InfoAndSaveBtn = styled.div`
 	margin-left: 32px;
 	height: 250px;
 	justify-content: space-around;
+	// border: solid blue 3px;
 `;
 const Thumbnail = styled.img`
 	filter: drop-shadow(0 12px 20px black);
@@ -84,55 +86,6 @@ const Title = styled.h2`
 	margin-bottom: 6px;
 `;
 const Artist = styled.h3``;
-const Featured = styled.div`
-	display: flex;
-	align-items: baseline;
-`;
-const ThumbnailSmall = styled.img`
-	height: 50px;
-	width: auto;
-`;
-const Contribute = styled.p`
-	color: blue;
-	cursor: pointer;
-`;
-const ResultDiv = styled.div`
-	display: flex;
-	flex-direction: row;
-`;
-const Result = styled(Link)`
-	width: 100%;
-	display: flex;
-	justify-content: left;
-	border: none;
-	background-color: #68696e;
-	position: relative;
-	text-decoration: none;
-	color: white;
-	&:hover {
-		bottom: 1px;
-	}
-`;
-const NotesAndRelated = styled.div`
-	width: 50%;
-	border-left: solid 1px black;
-`;
-const NotesBox = styled.div`
-	margin: 16px;
-	border: solid lightgrey 1px;
-	border-radius: 5px;
-	background-color: #fffefa;
-	filter: drop-shadow(0 0 8px #1f2124);
-	min-height: 300px;
-	color: black;
-`;
-const RelatedSongs = styled.div`
-	margin: 20px 56px;
-	color: black;
-`;
-const P = styled.p`
-	margin: 20px;
-`;
 
 export default SongInfo;
 
